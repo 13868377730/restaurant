@@ -19,7 +19,7 @@ public class WaitingController {
     @Autowired
     IWaitingService iWaitingService;
 
-    @GetMapping("insert")
+    @PostMapping("insert")
     Message insert(Waiting waiting){
         iWaitingService.insert(waiting);
         return MessageUtil.success();
@@ -37,4 +37,13 @@ public class WaitingController {
         return MessageUtil.success();
     }
 
+    @GetMapping("selectById")
+    Message selectById(int id){
+        return MessageUtil.success(iWaitingService.selectById(id));
+    }
+
+    @GetMapping("selectAll")
+    Message selectAll(){
+        return MessageUtil.success(iWaitingService.selectAll());
+    }
 }
