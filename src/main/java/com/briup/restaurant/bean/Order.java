@@ -18,11 +18,15 @@ public class Order implements Serializable {
 
     private String type;
 
-    private String customerName;
+    private String name;
 
-    private String phoneNumber;
+    private String phone;
 
     private String address;
+
+    private Integer userId;
+
+    private Integer tableId;
 
     private static final long serialVersionUID = 1L;
 
@@ -82,20 +86,20 @@ public class Order implements Serializable {
         this.type = type == null ? null : type.trim();
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getName() {
+        return name;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName == null ? null : customerName.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber == null ? null : phoneNumber.trim();
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
     }
 
     public String getAddress() {
@@ -104,6 +108,22 @@ public class Order implements Serializable {
 
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
     }
 
     @Override
@@ -119,9 +139,11 @@ public class Order implements Serializable {
         sb.append(", date=").append(date);
         sb.append(", time=").append(time);
         sb.append(", type=").append(type);
-        sb.append(", customerName=").append(customerName);
-        sb.append(", phoneNumber=").append(phoneNumber);
+        sb.append(", name=").append(name);
+        sb.append(", phone=").append(phone);
         sb.append(", address=").append(address);
+        sb.append(", userId=").append(userId);
+        sb.append(", tableId=").append(tableId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
