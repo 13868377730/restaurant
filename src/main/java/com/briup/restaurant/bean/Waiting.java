@@ -1,5 +1,8 @@
 package com.briup.restaurant.bean;
 
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
+
 import java.io.Serializable;
 
 public class Waiting implements Serializable {
@@ -11,6 +14,7 @@ public class Waiting implements Serializable {
 
     private String phoneNumber;
 
+    @ApiModelProperty(hidden = true)
     private Integer waitingTable;
 
     private static final long serialVersionUID = 1L;

@@ -11,4 +11,5 @@ public interface IWaitingService {
     void update(Waiting waiting);
     Waiting selectById(int id);
     List<Waiting> selectAll();
+    Waiting startWait(int seating, String phoneNumber);
 }
