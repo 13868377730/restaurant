@@ -82,6 +82,11 @@ public class UserController {
 
     }
 
+    @ApiOperation(value = "查询会员消费记录")
+    @GetMapping("/findconsumption")
+    public Message FindConsumption(int id){
+        return MessageUtil.success(userService.FindConsumption(id));
+    }
 
 
 }

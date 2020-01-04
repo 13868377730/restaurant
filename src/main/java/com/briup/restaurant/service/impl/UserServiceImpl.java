@@ -2,19 +2,25 @@ package com.briup.restaurant.service.impl;
 
 import com.briup.restaurant.bean.User;
 import com.briup.restaurant.bean.UserExample;
+import com.briup.restaurant.bean.ex.UserEX;
 import com.briup.restaurant.mapper.UserMapper;
+import com.briup.restaurant.mapper.ex.UserEXMapper;
 import com.briup.restaurant.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserEXMapper userEXMapper;
 
     @Override
     public List<User> FindAll() throws RuntimeException {
@@ -69,5 +75,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void Delete(int id) throws RuntimeException {
         userMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Map<String, Object>> FindConsumption(int id) throws RuntimeException {
+        return userEXMapper.FindConsumption(id);
     }
 }
