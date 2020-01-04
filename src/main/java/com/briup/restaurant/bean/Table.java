@@ -1,12 +1,19 @@
 package com.briup.restaurant.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
+@ApiModel
 public class Table implements Serializable {
+    @ApiModelProperty(value = "id")
     private Integer id;
 
+    @ApiModelProperty(value = "状态")
     private String state;
 
+    @ApiModelProperty(value = "桌型")
     private Integer seating;
 
     private static final long serialVersionUID = 1L;

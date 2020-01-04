@@ -208,4 +208,14 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectBy" resultType="com.briup.restaurant.bean.Food">
+   select * from restaurant_food
+where type LIKE #{key1} and state LIKE #{key2}
+and (type LIKE #{word} or state LIKE #{word} or name LiKE #{word})
+  </select>
+  <select id="selectByName" resultType="com.briup.restaurant.bean.Food">
+   select * from restaurant_food where name =#{name}
+  </select>
+
 </mapper>
