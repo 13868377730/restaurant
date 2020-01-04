@@ -31,4 +31,11 @@ public class OrderManageController {
     public Message selectDetailById(int id){
         return MessageUtil.success(iOrderManageService.showDetailById(id));
     }
+
+    @GetMapping("/updatetablebyid")
+    @ApiOperation(value = "更换餐桌")
+    public Message updateTableById(int orderId, int tableId){
+        iOrderManageService.updateTableById(orderId,tableId);
+        return MessageUtil.success("操作成功");
+    }
 }
