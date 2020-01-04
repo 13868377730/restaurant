@@ -14,6 +14,7 @@ public class WaitingServiceImpl implements IWaitingService {
 
     @Autowired
     WaitingMapper waitingMapper;
+
     @Override
     public void insert(Waiting waiting) {
         waitingMapper.insert(waiting);
@@ -44,5 +45,12 @@ public class WaitingServiceImpl implements IWaitingService {
     @Override
     public List<Waiting> selectAll() {
         return waitingMapper.selectByExample(new WaitingExample());
+    }
+
+    @Override
+    public Waiting startWait(int seating, String phoneNumber) {
+        Waiting waiting = new Waiting();
+        waiting.setPhoneNumber(phoneNumber);
+        waiting.setState("等待中");
     }
 }
