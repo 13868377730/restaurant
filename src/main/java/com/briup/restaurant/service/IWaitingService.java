@@ -1,6 +1,7 @@
 package com.briup.restaurant.service;
 
 import com.briup.restaurant.bean.Waiting;
+import com.briup.restaurant.bean.ex.ReturnWaiting;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ public interface IWaitingService {
     void update(Waiting waiting);
     Waiting selectById(int id);
     List<Waiting> selectAll();
-    Waiting startWait(int seating, String phoneNumber);
+    ReturnWaiting startWait(int seating, String phoneNumber);
 }

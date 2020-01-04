@@ -2,6 +2,7 @@ package com.briup.restaurant.service.impl;
 
 import com.briup.restaurant.bean.Waiting;
 import com.briup.restaurant.bean.WaitingExample;
+import com.briup.restaurant.bean.ex.ReturnWaiting;
 import com.briup.restaurant.mapper.WaitingMapper;
 import com.briup.restaurant.service.IWaitingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +49,13 @@ public class WaitingServiceImpl implements IWaitingService {
     }
 
     @Override
-    public Waiting startWait(int seating, String phoneNumber) {
+    public ReturnWaiting startWait(int seating, String phoneNumber) {
         Waiting waiting = new Waiting();
+        ReturnWaiting returnWaiting = new ReturnWaiting();//返回部分数据
+        waiting.setTableSeating(seating);
         waiting.setPhoneNumber(phoneNumber);
         waiting.setState("等待中");
+        waitingMapper.insert(waiting);
+        return returnWaiting;
     }
 }
