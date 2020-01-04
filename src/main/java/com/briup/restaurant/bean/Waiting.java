@@ -11,6 +11,8 @@ public class Waiting implements Serializable {
 
     private String phoneNumber;
 
+    private Integer waitingTable;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -45,6 +47,14 @@ public class Waiting implements Serializable {
         this.phoneNumber = phoneNumber == null ? null : phoneNumber.trim();
     }
 
+    public Integer getWaitingTable() {
+        return waitingTable;
+    }
+
+    public void setWaitingTable(Integer waitingTable) {
+        this.waitingTable = waitingTable;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -55,6 +65,7 @@ public class Waiting implements Serializable {
         sb.append(", tableSeating=").append(tableSeating);
         sb.append(", state=").append(state);
         sb.append(", phoneNumber=").append(phoneNumber);
+        sb.append(", waitingTable=").append(waitingTable);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

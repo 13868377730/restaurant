@@ -6,6 +6,7 @@
     <result column="table_seating" jdbcType="INTEGER" property="tableSeating" />
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="waiting_table" jdbcType="INTEGER" property="waitingTable" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, table_seating, state, phone_number
+    id, table_seating, state, phone_number, waiting_table
   </sql>
   <select id="selectByExample" parameterType="com.briup.restaurant.bean.WaitingExample" resultMap="BaseResultMap">
     select
@@ -100,9 +101,9 @@
   </delete>
   <insert id="insert" parameterType="com.briup.restaurant.bean.Waiting">
     insert into restaurant_waiting (id, table_seating, state, 
-      phone_number)
+      phone_number, waiting_table)
     values (#{id,jdbcType=INTEGER}, #{tableSeating,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
-      #{phoneNumber,jdbcType=VARCHAR})
+      #{phoneNumber,jdbcType=VARCHAR}, #{waitingTable,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.briup.restaurant.bean.Waiting">
     insert into restaurant_waiting
@@ -119,6 +120,9 @@
       <if test="phoneNumber != null">
         phone_number,
       </if>
+      <if test="waitingTable != null">
+        waiting_table,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -132,6 +136,9 @@
       </if>
       <if test="phoneNumber != null">
         #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="waitingTable != null">
+        #{waitingTable,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="record.phoneNumber != null">
         phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.waitingTable != null">
+        waiting_table = #{record.waitingTable,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +176,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       table_seating = #{record.tableSeating,jdbcType=INTEGER},
       state = #{record.state,jdbcType=VARCHAR},
-      phone_number = #{record.phoneNumber,jdbcType=VARCHAR}
+      phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
+      waiting_table = #{record.waitingTable,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +194,9 @@
       <if test="phoneNumber != null">
         phone_number = #{phoneNumber,jdbcType=VARCHAR},
       </if>
+      <if test="waitingTable != null">
+        waiting_table = #{waitingTable,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -190,7 +204,8 @@
     update restaurant_waiting
     set table_seating = #{tableSeating,jdbcType=INTEGER},
       state = #{state,jdbcType=VARCHAR},
-      phone_number = #{phoneNumber,jdbcType=VARCHAR}
+      phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      waiting_table = #{waitingTable,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
