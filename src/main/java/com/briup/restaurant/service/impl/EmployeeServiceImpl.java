@@ -24,4 +24,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
         return employeeMapper.updateByExampleSelective(employee,example);
     }
+
+    @Override
+    public Employee selectByPrimaryKey(Integer id) {
+        return employeeMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int deleteByPrimaryKey(Integer id) {
+        return employeeMapper.deleteByPrimaryKey(id);
+    }
 }

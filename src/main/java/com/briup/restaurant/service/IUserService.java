@@ -14,4 +14,5 @@ public interface IUserService {
     boolean IsExistence(User user) throws RuntimeException;
     User GetBeforeDay(User user) throws RuntimeException;
     void Delete(int id) throws RuntimeException;
+
 }
