@@ -28,4 +28,5 @@ public interface FoodMapper {
 
     int updateByPrimaryKey(Food record);
    List<Food>  selectBy(String key1,String key2,String word);
+  Food  selectByName(String name);
 }

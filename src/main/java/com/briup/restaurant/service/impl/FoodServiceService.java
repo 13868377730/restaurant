@@ -49,5 +49,11 @@ public class FoodServiceService implements IFoodService {
         return foods;
     }
 
+    @Override
+    public  Food selectById(int id) throws RuntimeException {
+     Food food=   foodMapper.selectByPrimaryKey(id);
+        return  food;
+    }
+
 
 }

@@ -34,11 +34,19 @@ ifoodService.addOrUpdateFood(food);
         ifoodService.addOrUpdateFood(food);
         return MessageUtil.success("修改成功");
     }
+
     @GetMapping("/selectAll")
     @ApiOperation("查询所有菜品信息")
    public Message selectAll(){
         return MessageUtil.success(ifoodService.selectAll());
    }
+    @GetMapping("/selectById")
+    @ApiOperation("根据id菜品信息")
+    public Message selectByName(int id)
+    {
+        return MessageUtil.success(ifoodService.selectById(id));
+    }
+
 
     @GetMapping("/selectByFoodName")
     @ApiOperation("根据菜名，菜品类型，菜品的状态查询菜品信息")
@@ -49,4 +57,8 @@ ifoodService.addOrUpdateFood(food);
         List<Food> foods=  ifoodService.selectBy(key1,key2,word);
         return MessageUtil.success(foods);
     }
+
+
+
+
 }
