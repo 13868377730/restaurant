@@ -7,4 +7,7 @@ import java.util.List;
 public interface ITableService {
     List<Table> findAll() throws  RuntimeException;
     List<Table> findBySth(String key,String word) throws  RuntimeException;
+    void deleteById(int id) throws RuntimeException;
+    void deleteSome(int[] ids) throws RuntimeException;
+    void AddOrUpdate(Table table) throws RuntimeException;
 }
