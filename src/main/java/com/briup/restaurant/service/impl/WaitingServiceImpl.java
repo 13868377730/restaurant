@@ -4,6 +4,7 @@ import com.briup.restaurant.bean.Waiting;
 import com.briup.restaurant.bean.WaitingExample;
 import com.briup.restaurant.bean.ex.ReturnWaiting;
 import com.briup.restaurant.mapper.WaitingMapper;
+import com.briup.restaurant.mapper.ex.WaitingEXMapper;
 import com.briup.restaurant.service.IWaitingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class WaitingServiceImpl implements IWaitingService {
 
     @Autowired
     WaitingMapper waitingMapper;
+    @Autowired
+    WaitingEXMapper waitingEXMapper;
 
     @Override
     public void insert(Waiting waiting) {
@@ -51,11 +54,18 @@ public class WaitingServiceImpl implements IWaitingService {
     @Override
     public ReturnWaiting startWait(int seating, String phoneNumber) {
         Waiting waiting = new Waiting();
-        ReturnWaiting returnWaiting = new ReturnWaiting();//返回部分数据
+        ReturnWaiting returnWaiting = new ReturnWaiting();
+        //用来返回部分数据
         waiting.setTableSeating(seating);
         waiting.setPhoneNumber(phoneNumber);
         waiting.setState("等待中");
-        waitingMapper.insert(waiting);
+        waiting.setWaitingTable(100);
+        //设置默认值
+        waitingEXMapper.insertAndGetId(waiting);
+        returnWaiting.setId(waiting.getId());
+        returnWaiting.setState(waiting.getState());
+        returnWaiting.setWaitTable(waiting.getWaitingTable());
+        //设置要返回的数据
         return returnWaiting;
     }
 }
