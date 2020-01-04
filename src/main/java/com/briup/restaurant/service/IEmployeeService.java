@@ -8,5 +8,8 @@ public interface IEmployeeService {
     int insertSelective(Employee employee);
     int updateByExampleSelective
             (Employee employee, EmployeeExample example);
+    Employee selectByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer id);
+
 }
 
