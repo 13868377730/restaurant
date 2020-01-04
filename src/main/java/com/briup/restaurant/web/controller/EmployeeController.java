@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/Employee")
 @Api(description = "雇员管理")
@@ -32,7 +34,7 @@ public class EmployeeController {
        return  MessageUtil.success(employee2);
     }
     @GetMapping("/selectByPrimaryKey")
-    @ApiOperation("/查找雇员")
+    @ApiOperation("/按ID查找雇员")
     public  Message selectByPrimaryKey(int id){
         Employee employee3=employeeService.selectByPrimaryKey(id);
         return  MessageUtil.success(employee3);
@@ -43,5 +45,18 @@ public class EmployeeController {
        int employee4=employeeService.deleteByPrimaryKey(id);
        return  MessageUtil.success(employee4);
 
+    }
+    @GetMapping("/selectByExample")
+    @ApiOperation("/查询所有")
+    public  Message selectByExample(EmployeeExample example){
+        List<Employee> employees5=employeeService.selectByExample(example);
+        return MessageUtil.success(employees5);
+    }
+    @GetMapping("/deleteByExample")
+    @ApiOperation(("/删除所有"))
+    public Message deleteByExample(EmployeeExample example){
+
+        int employee6=employeeService.deleteByExample(example);
+        return  MessageUtil.success(employee6);
     }
 }
