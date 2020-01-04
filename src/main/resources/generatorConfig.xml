@@ -50,12 +50,14 @@
 
 
 		<!-- 映射配置 -->
+		<!--
 		<table tableName="restaurant_food" domainObjectName="Food"></table>
 		<table tableName="restaurant_item" domainObjectName="Item"></table>
 		<table tableName="restaurant_order" domainObjectName="Order"></table>
 		<table tableName="restaurant_table" domainObjectName="Table"></table>
 		<table tableName="restaurant_user" domainObjectName="User"></table>
 		<table tableName="restaurant_employee" domainObjectName="Employee"></table>
+		-->
         <table tableName="restaurant_waiting" domainObjectName="Waiting"></table>
 	</context>
 </generatorConfiguration>

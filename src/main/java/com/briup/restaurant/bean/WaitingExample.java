@@ -363,6 +363,66 @@ public class WaitingExample {
             addCriterion("phone_number not between", value1, value2, "phoneNumber");
             return (Criteria) this;
         }
+
+        public Criteria andWaitingTableIsNull() {
+            addCriterion("waiting_table is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableIsNotNull() {
+            addCriterion("waiting_table is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableEqualTo(Integer value) {
+            addCriterion("waiting_table =", value, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableNotEqualTo(Integer value) {
+            addCriterion("waiting_table <>", value, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableGreaterThan(Integer value) {
+            addCriterion("waiting_table >", value, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableGreaterThanOrEqualTo(Integer value) {
+            addCriterion("waiting_table >=", value, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableLessThan(Integer value) {
+            addCriterion("waiting_table <", value, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableLessThanOrEqualTo(Integer value) {
+            addCriterion("waiting_table <=", value, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableIn(List<Integer> values) {
+            addCriterion("waiting_table in", values, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableNotIn(List<Integer> values) {
+            addCriterion("waiting_table not in", values, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableBetween(Integer value1, Integer value2) {
+            addCriterion("waiting_table between", value1, value2, "waitingTable");
+            return (Criteria) this;
+        }
+
+        public Criteria andWaitingTableNotBetween(Integer value1, Integer value2) {
+            addCriterion("waiting_table not between", value1, value2, "waitingTable");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
