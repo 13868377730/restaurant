@@ -32,11 +32,20 @@ public class FoodServiceService implements IFoodService {
     }
 
     @Override
-    public List<Food> selectByFoodName(String name) throws RuntimeException {
-        FoodExample example=new FoodExample();
-        example.createCriteria().andNameEqualTo(name);
-     List<Food>  foods=  foodMapper.selectByExample(example);
+    public List<Food> selectBy(String key1,String key2,String word) throws RuntimeException {
 
+        if (key1==null||"".equals(key1)){
+            key1="%%";
+        }
+        if (key2==null||"".equals(key2)){
+            key2="%%";
+        }
+        if (word==null){
+            word="";
+        }
+        word="%"+word+"%";
+
+        List<Food> foods=  foodMapper.selectBy(key1,key2,word);
         return foods;
     }
 
