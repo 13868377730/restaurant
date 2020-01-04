@@ -24,7 +24,7 @@ public class Swagger2Config {
     public Docket demoApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.briup.poll.web"))
+                .apis(RequestHandlerSelectors.basePackage("com.briup.restaurant.web.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());
