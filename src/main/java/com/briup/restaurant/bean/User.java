@@ -1,17 +1,25 @@
 package com.briup.restaurant.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
-
+@ApiModel
 public class User implements Serializable {
+    @ApiModelProperty(value = "会员id")
     private Integer id;
 
+    @ApiModelProperty(value = "姓名")
     private String name;
 
+    @ApiModelProperty(value = "手机号码")
     private String phoneNumber;
 
+    @ApiModelProperty(value = "账号余额")
     private Double balance;
 
+    @ApiModelProperty(hidden = true)
     private Date createTime;
 
     private static final long serialVersionUID = 1L;
