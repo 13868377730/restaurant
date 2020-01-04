@@ -31,6 +31,12 @@ public class WaitingController {
         return MessageUtil.success();
     }
 
+    @GetMapping("deleteBatch")
+    Message deleteBatch(int[] ids){
+        iWaitingService.deleteBatch(ids);
+        return MessageUtil.success();
+    }
+
     @PostMapping("update")
     Message update(Waiting waiting){
         iWaitingService.update(waiting);

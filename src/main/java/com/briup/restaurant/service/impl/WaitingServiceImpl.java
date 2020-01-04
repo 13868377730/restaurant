@@ -25,6 +25,13 @@ public class WaitingServiceImpl implements IWaitingService {
     }
 
     @Override
+    public void deleteBatch(int[] ids) {
+        for(int id: ids){
+            waitingMapper.deleteByPrimaryKey(id);
+        }
+    }
+
+    @Override
     public void update(Waiting waiting) {
         waitingMapper.updateByPrimaryKey(waiting);
     }
