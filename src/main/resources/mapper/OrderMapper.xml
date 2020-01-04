@@ -9,9 +9,11 @@
     <result column="date" jdbcType="DATE" property="date" />
     <result column="time" jdbcType="TIME" property="time" />
     <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
-    <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="table_id" jdbcType="INTEGER" property="tableId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -72,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, state, price, remark, date, time, type, customer_name, phone_number, address
+    id, state, price, remark, date, time, type, name, phone, address, user_id, table_id
   </sql>
   <select id="selectByExample" parameterType="com.briup.restaurant.bean.OrderExample" resultMap="BaseResultMap">
     select
@@ -107,12 +109,12 @@
   <insert id="insert" parameterType="com.briup.restaurant.bean.Order">
     insert into restaurant_order (id, state, price, 
       remark, date, time, type, 
-      customer_name, phone_number, address
-      )
+      name, phone, address, 
+      user_id, table_id)
     values (#{id,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
       #{remark,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{time,jdbcType=TIME}, #{type,jdbcType=VARCHAR}, 
-      #{customerName,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
-      )
+      #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{tableId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.briup.restaurant.bean.Order">
     insert into restaurant_order
@@ -138,14 +140,20 @@
       <if test="type != null">
         type,
       </if>
-      <if test="customerName != null">
-        customer_name,
+      <if test="name != null">
+        name,
       </if>
-      <if test="phoneNumber != null">
-        phone_number,
+      <if test="phone != null">
+        phone,
       </if>
       <if test="address != null">
         address,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="tableId != null">
+        table_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -170,14 +178,20 @@
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
       </if>
-      <if test="customerName != null">
-        #{customerName,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="phoneNumber != null">
-        #{phoneNumber,jdbcType=VARCHAR},
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null">
+        #{tableId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -211,14 +225,20 @@
       <if test="record.type != null">
         type = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.customerName != null">
-        customer_name = #{record.customerName,jdbcType=VARCHAR},
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.phoneNumber != null">
-        phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
+      <if test="record.phone != null">
+        phone = #{record.phone,jdbcType=VARCHAR},
       </if>
       <if test="record.address != null">
         address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.tableId != null">
+        table_id = #{record.tableId,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -234,9 +254,11 @@
       date = #{record.date,jdbcType=DATE},
       time = #{record.time,jdbcType=TIME},
       type = #{record.type,jdbcType=VARCHAR},
-      customer_name = #{record.customerName,jdbcType=VARCHAR},
-      phone_number = #{record.phoneNumber,jdbcType=VARCHAR},
-      address = #{record.address,jdbcType=VARCHAR}
+      name = #{record.name,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      table_id = #{record.tableId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -262,14 +284,20 @@
       <if test="type != null">
         type = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="customerName != null">
-        customer_name = #{customerName,jdbcType=VARCHAR},
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="phoneNumber != null">
-        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="tableId != null">
+        table_id = #{tableId,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -282,9 +310,11 @@
       date = #{date,jdbcType=DATE},
       time = #{time,jdbcType=TIME},
       type = #{type,jdbcType=VARCHAR},
-      customer_name = #{customerName,jdbcType=VARCHAR},
-      phone_number = #{phoneNumber,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR}
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      table_id = #{tableId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
