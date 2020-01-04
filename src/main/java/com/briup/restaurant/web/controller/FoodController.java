@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/food")
 @Api(description = "菜单管理")
@@ -41,7 +43,7 @@ ifoodService.addOrUpdateFood(food);
     @GetMapping("/selectByFoodName")
     @ApiOperation("根据菜名菜品信息")
     public Message selectByFoodName(String name){
-      Food food=  ifoodService.selectByFoodName(name);
+     List<Food> food=  ifoodService.selectByFoodName(name);
         return MessageUtil.success(food);
 
     }
