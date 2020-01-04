@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.restaurant.mapper.ex.OrderEXMapper">
+    <resultMap id="all" type="java.util.LinkedHashMap">
+        <id column="id" property="id"></id>
+        <result column="table_id" property="tableId"></result>
+        <result column="state" property="state"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="price" property="price"></result>
+        <result column="type" property="type"></result>
+        <result column="date" property="date"></result>
+        <result column="time" property="time"></result>
+    </resultMap>
+
+    <resultMap id="outDetail" type="java.util.LinkedHashMap">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="phone" property="phone"></result>
+        <result column="address" property="address"></result>
+        <result column="price" property="price"></result>
+        <result column="state" property="state"></result>
+        <result column="remark" property="remark"></result>
+        <collection property="items"
+                    column="id"
+                    select="selectItems"
+                    ofType="com.briup.restaurant.bean.Item">
+        </collection>
+    </resultMap>
+
+    <resultMap id="inDetail" type="java.util.LinkedHashMap">
+        <id column="id" property="id"></id>
+        <result column="table_id" property="tableId"></result>
+        <result column="price" property="price"></result>
+        <result column="state" property="state"></result>
+        <result column="remark" property="remark"></result>
+        <collection property="items"
+                    column="id"
+                    select="selectItems"
+                    ofType="com.briup.restaurant.bean.Item">
+        </collection>
+    </resultMap>
+
+    <resultMap id="items" type="java.util.LinkedHashMap">
+        <id column="id" property="id"></id>
+        <result column="state" property="state"></result>
+        <association property="food"
+                     column="food_id"
+                     select="selectFood">
+        </association>
+    </resultMap>
+
+    <resultMap id="food" type="java.util.LinkedHashMap">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="price" property="price"></result>
+    </resultMap>
+
+    <select id="selectAll" resultMap="all">
+        select id,table_id,state,user_id,price,type,date,time from restaurant_order
+    </select>
+
+    <select id="showOutDetailById" resultMap="outDetail">
+        select id,name,phone,address,price,state,remark from restaurant_order where id=#{id}
+    </select>
+
+    <select id="showInDetailById" resultMap="inDetail">
+        select id,table_id,state,price,remark from restaurant_order where id=#{id}
+    </select>
+
+    <select id="selectItems" resultMap="items">
+        select food_id,state from restaurant_item where order_id=#{id}
+    </select>
+
+    <select id="selectFood" resultMap="food">
+        select name,price from restaurant_food where id=#{id}
+    </select>
+
+</mapper>
