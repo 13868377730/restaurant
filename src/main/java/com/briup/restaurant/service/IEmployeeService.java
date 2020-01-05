@@ -14,6 +14,6 @@ public interface IEmployeeService {
     int deleteByPrimaryKey(Integer id);
     List<Employee> selectByExample(EmployeeExample example);
     int deleteByExample(EmployeeExample example);
-
+    public List<Employee> findAll() throws  RuntimeException;
 }
 

@@ -48,4 +48,12 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return employeeMapper.deleteByExample(example);
 
     }
+
+    @Override
+    public List<Employee> findAll() throws RuntimeException {
+        EmployeeExample employeeExample=new EmployeeExample();
+       Employee employee= (Employee) employeeMapper.findAll(employeeExample);
+       return (List<Employee>) employee;
+    }
+
 }

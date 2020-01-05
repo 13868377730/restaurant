@@ -46,17 +46,23 @@ public class EmployeeController {
        return  MessageUtil.success(employee4);
 
     }
-    @GetMapping("/selectByExample")
+    //@GetMapping("/selectByExample")
     @ApiOperation("/查询所有")
     public  Message selectByExample(EmployeeExample example){
         List<Employee> employees5=employeeService.selectByExample(example);
         return MessageUtil.success(employees5);
     }
-    @GetMapping("/deleteByExample")
+    //@GetMapping("/deleteByExample")
     @ApiOperation(("/删除所有"))
     public Message deleteByExample(EmployeeExample example){
 
         int employee6=employeeService.deleteByExample(example);
         return  MessageUtil.success(employee6);
+    }
+    //@GetMapping("/findAll")
+    @ApiOperation("/查询所有")
+    public  Message findAll(){
+        List<Employee> employees=employeeService.findAll();
+        return MessageUtil.success(employees);
     }
 }
