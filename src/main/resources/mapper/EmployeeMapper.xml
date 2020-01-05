@@ -255,4 +255,7 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findAll" resultType="com.briup.restaurant.bean.Employee">
+    select * from restaurant_employee
+  </select>
 </mapper>
