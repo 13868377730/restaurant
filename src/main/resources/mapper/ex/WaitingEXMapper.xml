@@ -18,14 +18,16 @@
         <result column="phoneNumber" property="phone_number"/>
         <result column="table_seating" property="seat"/>
         <result column="state" property="state"/>
+        <result column="waiting_table" property="waitTable"/>
     </resultMap>
     <select id="selectEnd" resultMap="ew">
-        select id,state,phone_number
+        select id,state,phone_number,waiting_table
         from restaurant_waiting
         where waiting_table=
         (select min(waiting_table)
         from restaurant_waiting
-        where table_seating = #{seat})
+        where table_seating = #{seat}
+        and state = '等待中')
         and state = '等待中'
     </select>
     <update id="updateEnd">
@@ -37,5 +39,6 @@
         update restaurant_waiting
         set waiting_table = waiting_table-1
         where state = '等待中'
+        and waiting_table >= #{waitTable}
     </update>
 </mapper>

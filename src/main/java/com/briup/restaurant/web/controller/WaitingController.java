@@ -1,6 +1,7 @@
 package com.briup.restaurant.web.controller;
 
 import com.briup.restaurant.bean.Waiting;
+import com.briup.restaurant.bean.ex.EndWait;
 import com.briup.restaurant.service.IWaitingService;
 import com.briup.restaurant.util.Message;
 import com.briup.restaurant.util.MessageUtil;
@@ -69,8 +70,29 @@ public class WaitingController {
     }
 
     @PostMapping("endWait")
-    @ApiOperation("排队完成")
+    @ApiOperation("排号完成")
     Message endWait(int seat){
         return MessageUtil.success(iWaitingService.endWait(seat));
     }
+
+    @PostMapping("outOfDate")
+    @ApiOperation("排号过期")
+    Message outOfDate(int id){
+        Waiting waiting = iWaitingService.selectById(id);
+        iWaitingService.deleteById(id);//删除排号
+        EndWait endWait = iWaitingService.endWait(waiting.getTableSeating());
+        //取下一个排号
+        endWait.setState("排号"+waiting.getId()+"过期，您的排号已完成，请入座");
+        return MessageUtil.success(endWait);
+    }
+
+    @PostMapping("IntoTheSeat")
+    @ApiOperation("排号完成进入座位")
+    Message IntoTheSeat(int id){
+        Waiting waiting = iWaitingService.selectById(id);//搜索入座排号信息
+        iWaitingService.deleteById(id);
+        return MessageUtil.success("排号"+waiting.getId()+
+                "已入座,排号记录已删除");
+    }
+
 }

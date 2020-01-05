@@ -74,7 +74,9 @@ public class WaitingServiceImpl implements IWaitingService {
     public EndWait endWait(int seat){
     EndWait endWait =  waitingEXMapper.selectEnd(seat);
     waitingEXMapper.updateEnd(endWait.getId());
-    waitingEXMapper.updateWait();
+    waitingEXMapper.updateWait(endWait.getWaitTable());
+    endWait.setState("排号完成请入座");//因为数据库更新了对象还没更新
+    endWait.setWaitTable(0);
     return endWait;
     }
 }

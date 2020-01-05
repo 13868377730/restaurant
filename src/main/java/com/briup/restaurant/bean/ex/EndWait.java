@@ -4,6 +4,15 @@ public class EndWait {
     private int id;
     private String phoneNumber;
     private String state;
+    private int waitTable;
+
+    public int getWaitTable() {
+        return waitTable;
+    }
+
+    public void setWaitTable(int waitTable) {
+        this.waitTable = waitTable;
+    }
 
     public String getState() {
         return state;
