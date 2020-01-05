@@ -1,9 +1,6 @@
 package com.briup.restaurant.service.impl;
 
-import com.briup.restaurant.bean.Item;
-import com.briup.restaurant.bean.ItemExample;
-import com.briup.restaurant.bean.Order;
-import com.briup.restaurant.bean.Table;
+import com.briup.restaurant.bean.*;
 import com.briup.restaurant.mapper.FoodMapper;
 import com.briup.restaurant.mapper.ItemMapper;
 import com.briup.restaurant.mapper.OrderMapper;
@@ -99,18 +96,39 @@ public class OrderManageServiceImpl implements IOrderManageService {
         example.createCriteria().andFoodIdEqualTo(foodId).andOrderIdEqualTo(orderId);
         List<Item> items = itemMapper.selectByExample(example);
         for(Item item:items){
-            System.out.println(item);
             if ("未开始".equals(item.getState())){
                 //在菜单项中删除记录
                 itemMapper.deleteByPrimaryKey(item.getId());
                 //在订单表中减去对应的价钱
                 Order order = orderMapper.selectByPrimaryKey(orderId);
-                order.setPrice(order.getPrice()
-                        -foodMapper.selectByPrimaryKey(foodId).getPrice());
+                Food food=foodMapper.selectByPrimaryKey(foodId);
+                order.setPrice(order.getPrice() - food.getPrice());
                 orderMapper.updateByPrimaryKey(order);
             }else{
                 throw new RuntimeException("该菜品备餐中或已完成，不可取消");
             }
         }
+    }
+
+    @Override
+    public List<Map<String, Object>> searchByCon(String key, String word) throws RuntimeException {
+
+        if ("状态".equals(key)) {
+            word = "%" + word + "%";
+            return orderEXMapper.selectByState(word);
+        }else if("会员ID".equals(key)){
+            word = "%" + word + "%";
+            return orderEXMapper.selectByUser(word);
+        }else if("".equals(key)||key==null){
+            if ("".equals(word)||word==null){
+                return orderEXMapper.selectAll();
+            }else{
+                List<Map<String, Object>> list1=orderEXMapper.selectByState(word);
+                List<Map<String, Object>> list2=orderEXMapper.selectByUser(word);
+                list1.remove(list2);
+                return orderEXMapper.selectAll();
+            }
+        }
+        return null;
     }
 }

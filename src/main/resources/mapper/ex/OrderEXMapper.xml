@@ -59,6 +59,14 @@
         select id,table_id,state,user_id,price,type,date,time from restaurant_order
     </select>
 
+    <select id="selectByUser" resultMap="all">
+        select id,table_id,state,user_id,price,type,date,time from restaurant_order WHERE user_id=#{id}
+    </select>
+
+    <select id="selectByState" resultMap="all">
+        select id,table_id,state,user_id,price,type,date,time from restaurant_order WHERE state=#{id}
+    </select>
+
     <select id="showOutDetailById" resultMap="outDetail">
         select id,name,phone,address,price,state,remark from restaurant_order where id=#{id}
     </select>

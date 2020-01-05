@@ -11,8 +11,6 @@ public class Item implements Serializable {
 
     private Integer orderId;
 
-    private Integer count;
-
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -47,14 +45,6 @@ public class Item implements Serializable {
         this.orderId = orderId;
     }
 
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -65,7 +55,6 @@ public class Item implements Serializable {
         sb.append(", state=").append(state);
         sb.append(", foodId=").append(foodId);
         sb.append(", orderId=").append(orderId);
-        sb.append(", count=").append(count);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
