@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,14 +32,14 @@ public class OrderManageController {
         return MessageUtil.success(iOrderManageService.showDetailById(id));
     }
 
-    @GetMapping("/updatetablebyid")
+    @PostMapping("/updatetablebyid")
     @ApiOperation(value = "更换餐桌")
     public Message updateTableById(int orderId, int tableId){
         iOrderManageService.updateTableById(orderId,tableId);
         return MessageUtil.success("操作成功");
     }
 
-    @GetMapping("/discountbyid")
+    @PostMapping("/discountbyid")
     @ApiOperation(value = "打折")
     public Message discountById(int orderId, double price){
         iOrderManageService.discountById(orderId,price);
@@ -50,4 +51,18 @@ public class OrderManageController {
         iOrderManageService.deleteFoodById(orderId,foodId);
         return MessageUtil.success("操作成功");
     }
+
+    @GetMapping("/search")
+    @ApiOperation(value = "搜索")
+    public Message searchByCon(String key, String word){
+        return MessageUtil.success(iOrderManageService.searchByCon(key,word));
+    }
+    @GetMapping("/deleteorder")
+    @ApiOperation(value = "取消订单")
+    public Message deleteOrderById(int id){
+        iOrderManageService.deleteOrderById(id);
+        return MessageUtil.success("操作成功");
+    }
+
+
 }

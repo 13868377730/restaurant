@@ -56,15 +56,15 @@
     </resultMap>
 
     <select id="selectAll" resultMap="all">
-        select id,table_id,state,user_id,price,type,date,time from restaurant_order
+        select id,table_id,state,user_id,price,type,date,time from restaurant_order order by id desc
     </select>
 
     <select id="selectByUser" resultMap="all">
-        select id,table_id,state,user_id,price,type,date,time from restaurant_order WHERE user_id=#{id}
+        select id,table_id,state,user_id,price,type,date,time from restaurant_order where user_id like #{word} order by id desc
     </select>
 
     <select id="selectByState" resultMap="all">
-        select id,table_id,state,user_id,price,type,date,time from restaurant_order WHERE state=#{id}
+        select id,table_id,state,user_id,price,type,date,time from restaurant_order where state like #{word} order by id desc
     </select>
 
     <select id="showOutDetailById" resultMap="outDetail">

@@ -7,6 +7,7 @@ import com.briup.restaurant.util.Message;
 import com.briup.restaurant.util.MessageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +65,7 @@ public class TableController {
 
     @PostMapping("/UpdateById")
     @ApiOperation("通过id修改餐桌")
+
     public Message UpdateById(Table table){
         tableService.AddOrUpdate(table);
         return MessageUtil.success();
@@ -71,6 +73,10 @@ public class TableController {
 
     @PostMapping("/changeStateById")
     @ApiOperation("通过id改变餐桌状态")
+    @ApiImplicitParams ({
+        @ApiImplicitParam(name = "id", value = "id", paramType = "query", dataType = "int", required = true),
+        @ApiImplicitParam(name = "state", value = "状态", paramType = "query", dataType = "String", required = true)
+    })
     public Message changeStateById(int id,String state){
         tableService.changeByid(id,state);
         return MessageUtil.success();

@@ -1,33 +1,47 @@
 package com.briup.restaurant.bean;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Order implements Serializable {
+    @ApiModelProperty(hidden = true)
     private Integer id;
 
+
+    @ApiModelProperty(hidden = true)
     private String state;
 
+    @ApiModelProperty(hidden = true)
     private Double price;
 
+    @ApiModelProperty(value = "订单备注")
     private String remark;
 
+    @ApiModelProperty(hidden = true)
     private Date date;
 
+    @ApiModelProperty(hidden = true)
     private Date time;
 
+    @ApiModelProperty(hidden = true)
     private String type;
 
+    @ApiModelProperty(value = "客户姓名")
     private String name;
 
+    @ApiModelProperty(value = "联系方式")
     private String phone;
 
+    @ApiModelProperty(value = "订单地址")
     private String address;
 
+    @ApiModelProperty(value = "会员id")
     private Integer userId;
 
+    @ApiModelProperty(hidden = true)
     private Integer tableId;
-
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
