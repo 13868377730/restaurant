@@ -69,4 +69,11 @@ public class TableController {
         return MessageUtil.success();
     }
 
+    @PostMapping("/changeStateById")
+    @ApiOperation("通过id改变餐桌状态")
+    public Message changeStateById(int id,String state){
+        tableService.changeByid(id,state);
+        return MessageUtil.success();
+    }
+
 }

@@ -86,4 +86,12 @@ public class TableServiceImpl implements ITableService {
             }
         }
     }
+
+    @Override
+    public void changeByid(int id, String state) throws RuntimeException {
+        Table table=new Table();
+        table.setId(id);
+        table.setState(state);
+        tableMapper.updateByPrimaryKeySelective(table);
+    }
 }

@@ -2,6 +2,7 @@ package com.briup.restaurant.service.impl;
 
 import com.briup.restaurant.bean.Food;
 import com.briup.restaurant.bean.FoodExample;
+import com.briup.restaurant.bean.ex.FoodSales;
 import com.briup.restaurant.mapper.FoodMapper;
 import com.briup.restaurant.service.IFoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,20 @@ public class FoodServiceService implements IFoodService {
     public  Food selectById(int id) throws RuntimeException {
      Food food=   foodMapper.selectByPrimaryKey(id);
         return  food;
+    }
+
+    @Override
+    public List<Food> selectByState() throws RuntimeException {
+        FoodExample example=new FoodExample();
+        example.createCriteria().andStateEqualTo("在架");
+        List<Food> foods=foodMapper.selectByExample(example);
+        return foods;
+    }
+
+    @Override
+    public List<FoodSales> selectSales(String date1, String date2) {
+     List<FoodSales> foodSales=   foodMapper.selectSales(date1,date2);
+        return foodSales;
     }
 
 
