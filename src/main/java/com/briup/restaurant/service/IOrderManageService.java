@@ -13,4 +13,5 @@ public interface IOrderManageService {
     void discountById(int orderId,double price) throws RuntimeException;
     void deleteFoodById(int orderId, int foodId) throws RuntimeException;
     List<Map<String, Object>> searchByCon(String key,String word)throws RuntimeException;
+    void deleteOrderById(int id) throws RuntimeException;
 }

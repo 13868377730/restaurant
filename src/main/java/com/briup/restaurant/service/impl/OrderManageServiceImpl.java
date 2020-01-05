@@ -10,6 +10,8 @@ import com.briup.restaurant.service.IOrderManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +36,11 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
     @Override
     //只查询所需字段，用Map装
+    //用sql语句确保最新订单在最前显示
     public List<Map<String, Object>> selectAll() throws RuntimeException {
         return orderEXMapper.selectAll();
     }
+
 
     @Override
     public Map<String, Object> showDetailById(int id) throws RuntimeException {
@@ -73,6 +77,7 @@ public class OrderManageServiceImpl implements IOrderManageService {
         }
     }
 
+    //1.5
     @Override
     public void discountById(int orderId, double price) throws RuntimeException {
         if ("已核对".equals(orderMapper.selectByPrimaryKey(orderId).getState())) {
@@ -114,26 +119,53 @@ public class OrderManageServiceImpl implements IOrderManageService {
         }
     }
 
+    //模糊查询必须用like，等号不显示
     @Override
     public List<Map<String, Object>> searchByCon(String key, String word) throws RuntimeException {
-
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         if ("状态".equals(key)) {
             word = "%" + word + "%";
-            return orderEXMapper.selectByState(word);
+            list=orderEXMapper.selectByState(word);
+            System.out.println(list);
         }else if("会员ID".equals(key)){
             word = "%" + word + "%";
-            return orderEXMapper.selectByUser(word);
+            list= orderEXMapper.selectByUser(word);
         }else if("".equals(key)||key==null){
             if ("".equals(word)||word==null){
-                return orderEXMapper.selectAll();
+                list=orderEXMapper.selectAll();
             }else{
+                word = "%" + word + "%";
                 List<Map<String, Object>> list1=orderEXMapper.selectByState(word);
                 List<Map<String, Object>> list2=orderEXMapper.selectByUser(word);
-                list1.remove(list2);
-                return orderEXMapper.selectAll();
+                System.out.println(list1);
+                //集合合并
+                list1.addAll(list2);
+                //集合去重
+                HashSet h = new HashSet(list1);
+                list1.clear();
+                list1.addAll(h);
+                System.out.println(list1);
+                list=list1;
             }
         }
-        return null;
+        return list;
+    }
+
+    @Override
+    public void deleteOrderById(int id) throws RuntimeException {
+        if("进行中".equals(orderMapper.selectByPrimaryKey(id).getState())){
+            //删除订单项
+            ItemExample example = new ItemExample();
+            example.createCriteria().andOrderIdEqualTo(id);
+            List<Item> items = itemMapper.selectByExample(example);
+            for (Item item:items){
+                itemMapper.deleteByPrimaryKey(item.getId());
+            }
+            orderMapper.deleteByPrimaryKey(id);
+        }else{
+            throw new RuntimeException("该订单已核对或已买单，无法取消");
+        }
+
     }
 
 }
