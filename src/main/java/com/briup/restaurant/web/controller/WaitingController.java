@@ -78,21 +78,14 @@ public class WaitingController {
     @PostMapping("outOfDate")
     @ApiOperation("排号过期")
     Message outOfDate(int id){
-        Waiting waiting = iWaitingService.selectById(id);
-        iWaitingService.deleteById(id);//删除排号
-        EndWait endWait = iWaitingService.endWait(waiting.getTableSeating());
-        //取下一个排号
-        endWait.setState("排号"+waiting.getId()+"过期，您的排号已完成，请入座");
-        return MessageUtil.success(endWait);
+        return MessageUtil.success(iWaitingService.outOfDate(id));
     }
 
     @PostMapping("IntoTheSeat")
     @ApiOperation("排号完成进入座位")
     Message IntoTheSeat(int id){
-        Waiting waiting = iWaitingService.selectById(id);//搜索入座排号信息
-        iWaitingService.deleteById(id);
-        return MessageUtil.success("排号"+waiting.getId()+
-                "已入座,排号记录已删除");
+        return MessageUtil.success("排号"+iWaitingService.intoTheSeat(id)+
+                "已入座,排号记录已删除");//该方法删除排号并返回id
     }
 
 }
