@@ -63,8 +63,14 @@ public class WaitingController {
 
     @PostMapping("startWait")
     @ApiOperation("取号排队")
-    Message startWaiting(int tableSeating, String phoneNumber){
+    Message startWait(int tableSeating, String phoneNumber){
         return MessageUtil.success(
                 iWaitingService.startWait(tableSeating,phoneNumber));
+    }
+
+    @PostMapping("endWait")
+    @ApiOperation("排队完成")
+    Message endWait(int seat){
+        return MessageUtil.success(iWaitingService.endWait(seat));
     }
 }

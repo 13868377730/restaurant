@@ -1,6 +1,6 @@
 package com.briup.restaurant.bean.ex;
 
-public class ReturnWaiting {
+public class StartWait {
     private int id;
     private String state;
     private int waitTable;
