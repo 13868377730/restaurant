@@ -1,5 +1,6 @@
 package com.briup.restaurant.web.controller;
 
+
 import com.briup.restaurant.service.IOrderManageService;
 import com.briup.restaurant.service.IOrderSettleService;
 import com.briup.restaurant.util.Message;
@@ -12,16 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
-@RequestMapping("/order/manage")
-@Api(description = "订单管理")
-public class OrderManageController {
-
+@RequestMapping("/order/settle")
+@Api(description = "订单结算")
+public class OrderSettleController {
     @Autowired
     private IOrderManageService iOrderManageService;
 
-
+    @Autowired
+    private IOrderSettleService iOrderSettleService;
 
     @GetMapping("/selectall")
     @ApiOperation(value = "查询所有订单")
@@ -35,19 +35,6 @@ public class OrderManageController {
         return MessageUtil.success(iOrderManageService.showDetailById(id));
     }
 
-    @PostMapping("/updatetablebyid")
-    @ApiOperation(value = "更换餐桌")
-    public Message updateTableById(int orderId, int tableId){
-        iOrderManageService.updateTableById(orderId,tableId);
-        return MessageUtil.success("操作成功");
-    }
-
-    @PostMapping("/discountbyid")
-    @ApiOperation(value = "打折")
-    public Message discountById(int orderId, double price){
-        iOrderManageService.discountById(orderId,price);
-        return MessageUtil.success("操作成功");
-    }
     @GetMapping("/deletefoodbyid")
     @ApiOperation(value = "取消未上桌菜品")
     public Message deleteFoodById(int orderId, int foodId){
@@ -55,15 +42,19 @@ public class OrderManageController {
         return MessageUtil.success("操作成功");
     }
 
-    @GetMapping("/search")
-    @ApiOperation(value = "搜索")
-    public Message searchByCon(String key, String word){
-        return MessageUtil.success(iOrderManageService.searchByCon(key,word));
-    }
-    @GetMapping("/deleteorder")
-    @ApiOperation(value = "取消订单")
-    public Message deleteOrderById(int id){
-        iOrderManageService.deleteOrderById(id);
+    @PostMapping("/check")
+    @ApiOperation(value = "核对订单")
+    public Message check(int id){
+        iOrderSettleService.check(id);
         return MessageUtil.success("操作成功");
     }
+
+    @PostMapping("/settle")
+    @ApiOperation(value = "订单结算")
+    public Message settle(int id){
+        iOrderSettleService.settle(id);
+        return MessageUtil.success("操作成功");
+    }
+
+
 }
