@@ -6,7 +6,7 @@
 <generatorConfiguration>
 
 	<classPathEntry
-		location="D:\repository\mysql\mysql-connector-java\8.0.18\mysql-connector-java-8.0.18.jar"/>
+		location="D:\java\repository\mysql\mysql-connector-java\8.0.18\mysql-connector-java-8.0.18.jar"/>
 	<context id="DB2Tables" targetRuntime="MyBatis3">
 
 		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
@@ -58,6 +58,6 @@
 		<table tableName="restaurant_user" domainObjectName="User"></table>
 		<table tableName="restaurant_employee" domainObjectName="Employee"></table>
 		-->
-        <table tableName="restaurant_waiting" domainObjectName="Waiting"></table>
+        <table tableName="restaurant_item" domainObjectName="Item"></table>
 	</context>
 </generatorConfiguration>

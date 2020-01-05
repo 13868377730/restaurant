@@ -1,7 +1,11 @@
 package com.briup.restaurant.service.impl;
 
+import com.briup.restaurant.bean.Item;
+import com.briup.restaurant.bean.ItemExample;
 import com.briup.restaurant.bean.Order;
 import com.briup.restaurant.bean.Table;
+import com.briup.restaurant.mapper.FoodMapper;
+import com.briup.restaurant.mapper.ItemMapper;
 import com.briup.restaurant.mapper.OrderMapper;
 import com.briup.restaurant.mapper.TableMapper;
 import com.briup.restaurant.mapper.ex.OrderEXMapper;
@@ -24,6 +28,12 @@ public class OrderManageServiceImpl implements IOrderManageService {
     @Autowired
     private TableMapper tableMapper;
 
+    @Autowired
+    private ItemMapper itemMapper;
+
+    @Autowired
+    private FoodMapper foodMapper;
+
 
     @Override
     //只查询所需字段，用Map装
@@ -44,7 +54,6 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
     @Override
     public void updateTableById(int orderId, int tableId) throws RuntimeException {
-
         if (tableMapper.selectByPrimaryKey(tableId) == null){
             throw new RuntimeException("输入的餐桌号有误");
         }else if ("忙碌".equals(tableMapper.selectByPrimaryKey(tableId).getState())){
@@ -64,6 +73,44 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
             order.setTableId(tableId);
             orderMapper.updateByPrimaryKey(order);
+        }
+    }
+
+    @Override
+    public void discountById(int orderId, double price) throws RuntimeException {
+        if ("已核对".equals(orderMapper.selectByPrimaryKey(orderId).getState())) {
+            if (price <= 0) {
+                throw new RuntimeException("金额输入有误，请重新输入");
+            } else if (price >= orderMapper.selectByPrimaryKey(orderId).getPrice()) {
+                throw new RuntimeException("折后金额大于或等于现在金额，请重新输入");
+            } else {
+                Order order = orderMapper.selectByPrimaryKey(orderId);
+                order.setPrice(price);
+                orderMapper.updateByPrimaryKey(order);
+            }
+        } else {
+            throw new RuntimeException("订单未核对，不可打折");
+        }
+    }
+
+    @Override
+    public void deleteFoodById(int orderId, int foodId) throws RuntimeException {
+        ItemExample example = new ItemExample();
+        example.createCriteria().andFoodIdEqualTo(foodId).andOrderIdEqualTo(orderId);
+        List<Item> items = itemMapper.selectByExample(example);
+        for(Item item:items){
+            System.out.println(item);
+            if ("未开始".equals(item.getState())){
+                //在菜单项中删除记录
+                itemMapper.deleteByPrimaryKey(item.getId());
+                //在订单表中减去对应的价钱
+                Order order = orderMapper.selectByPrimaryKey(orderId);
+                order.setPrice(order.getPrice()
+                        -foodMapper.selectByPrimaryKey(foodId).getPrice());
+                orderMapper.updateByPrimaryKey(order);
+            }else{
+                throw new RuntimeException("该菜品备餐中或已完成，不可取消");
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ import com.briup.restaurant.util.MessageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +35,19 @@ public class OrderManageController {
     @ApiOperation(value = "更换餐桌")
     public Message updateTableById(int orderId, int tableId){
         iOrderManageService.updateTableById(orderId,tableId);
+        return MessageUtil.success("操作成功");
+    }
+
+    @GetMapping("/discountbyid")
+    @ApiOperation(value = "打折")
+    public Message discountById(int orderId, double price){
+        iOrderManageService.discountById(orderId,price);
+        return MessageUtil.success("操作成功");
+    }
+    @GetMapping("/deletefoodbyid")
+    @ApiOperation(value = "取消未上桌菜品")
+    public Message deleteFoodById(int orderId, int foodId){
+        iOrderManageService.deleteFoodById(orderId,foodId);
         return MessageUtil.success("操作成功");
     }
 }

@@ -48,17 +48,30 @@ ifoodService.addOrUpdateFood(food);
     }
 
 
-    @GetMapping("/selectByFoodName")
+    @GetMapping("/selectBy")
     @ApiOperation("根据菜名，菜品类型，菜品的状态查询菜品信息")
     @ApiImplicitParams({@ApiImplicitParam(name= "key1",value="菜品类型",paramType = "query" ,dataType = "String"),
 @ApiImplicitParam(name= "key2",value="菜品状态",paramType = "query" ,dataType = "String")
     })
-    public Message selectByFoodName(String key1,String key2,String word){
+    public Message selectBy(String key1,String key2,String word){
         List<Food> foods=  ifoodService.selectBy(key1,key2,word);
         return MessageUtil.success(foods);
     }
+@GetMapping("/selectByState")
+@ApiOperation("查询所有在架从菜品")
+public Message selectByState(){
 
+        return MessageUtil.success(ifoodService.selectByState());
+}
+    @GetMapping("/selectSales")
+    @ApiOperation("查看菜品销量")
+    @ApiImplicitParams({@ApiImplicitParam(name= "date1",value="开始日期",paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name= "date2",value="结束日期",paramType = "query" ,dataType = "String")
+    })
+public Message selectSales(String date1,String date2){
 
+        return MessageUtil.success(ifoodService.selectSales(date1, date2));
+}
 
 
 }

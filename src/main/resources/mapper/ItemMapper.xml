@@ -6,6 +6,7 @@
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="food_id" jdbcType="INTEGER" property="foodId" />
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="count" jdbcType="INTEGER" property="count" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, state, food_id, order_id
+    id, state, food_id, order_id, count
   </sql>
   <select id="selectByExample" parameterType="com.briup.restaurant.bean.ItemExample" resultMap="BaseResultMap">
     select
@@ -100,9 +101,9 @@
   </delete>
   <insert id="insert" parameterType="com.briup.restaurant.bean.Item">
     insert into restaurant_item (id, state, food_id, 
-      order_id)
+      order_id, count)
     values (#{id,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, #{foodId,jdbcType=INTEGER}, 
-      #{orderId,jdbcType=INTEGER})
+      #{orderId,jdbcType=INTEGER}, #{count,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.briup.restaurant.bean.Item">
     insert into restaurant_item
@@ -119,6 +120,9 @@
       <if test="orderId != null">
         order_id,
       </if>
+      <if test="count != null">
+        count,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -132,6 +136,9 @@
       </if>
       <if test="orderId != null">
         #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -156,6 +163,9 @@
       <if test="record.orderId != null">
         order_id = #{record.orderId,jdbcType=INTEGER},
       </if>
+      <if test="record.count != null">
+        count = #{record.count,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +176,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       state = #{record.state,jdbcType=VARCHAR},
       food_id = #{record.foodId,jdbcType=INTEGER},
-      order_id = #{record.orderId,jdbcType=INTEGER}
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      count = #{record.count,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +194,9 @@
       <if test="orderId != null">
         order_id = #{orderId,jdbcType=INTEGER},
       </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -190,7 +204,8 @@
     update restaurant_item
     set state = #{state,jdbcType=VARCHAR},
       food_id = #{foodId,jdbcType=INTEGER},
-      order_id = #{orderId,jdbcType=INTEGER}
+      order_id = #{orderId,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

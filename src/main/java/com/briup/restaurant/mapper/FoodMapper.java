@@ -3,6 +3,8 @@ package com.briup.restaurant.mapper;
 import com.briup.restaurant.bean.Food;
 import com.briup.restaurant.bean.FoodExample;
 import java.util.List;
+
+import com.briup.restaurant.bean.ex.FoodSales;
 import org.apache.ibatis.annotations.Param;
 
 public interface FoodMapper {
@@ -28,5 +30,7 @@ public interface FoodMapper {
 
     int updateByPrimaryKey(Food record);
    List<Food>  selectBy(String key1,String key2,String word);
-  Food  selectByName(String name);
+   List<FoodSales> selectSales(String date1,String date2);
+
+
 }
