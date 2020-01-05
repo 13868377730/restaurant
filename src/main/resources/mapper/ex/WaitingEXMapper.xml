@@ -17,13 +17,22 @@
         <id column="id" property="id"/>
         <result column="phoneNumber" property="phone_number"/>
         <result column="table_seating" property="seat"/>
+        <result column="state" property="state"/>
     </resultMap>
     <select id="selectEnd" resultMap="ew">
-        select id,phone_number
+        select id,state,phone_number
         from restaurant_waiting
         where waiting_table=
         (select min(waiting_table)
         from restaurant_waiting
         where table_seating = #{seat})
     </select>
+    <update id="updateEnd">
+        update (select * from restaurant_waiting where id = #{})
+        set state value "排队完成请入座"
+    </update>
+    <update id="updateWait">
+        update (select * from restaurant_waiting where state = "等待中")
+        set waiting_table value waiting_table-1
+    </update>
 </mapper>

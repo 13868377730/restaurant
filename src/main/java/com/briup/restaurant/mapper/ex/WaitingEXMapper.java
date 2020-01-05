@@ -7,4 +7,6 @@ public interface WaitingEXMapper {
     int insertAndGetId(Waiting waiting);
     int countWait();
     EndWait selectEnd(int seat);
+    void updateEnd(int id);
+    void updateWait();
 }

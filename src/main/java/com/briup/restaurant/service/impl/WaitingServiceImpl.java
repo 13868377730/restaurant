@@ -72,6 +72,9 @@ public class WaitingServiceImpl implements IWaitingService {
 
     @Override
     public EndWait endWait(int seat){
-    return waitingEXMapper.selectEnd(seat);
+    EndWait endWait =  waitingEXMapper.selectEnd(seat);
+    waitingEXMapper.updateEnd(endWait.getId());
+    waitingEXMapper.updateWait();
+    return endWait;
     }
 }
