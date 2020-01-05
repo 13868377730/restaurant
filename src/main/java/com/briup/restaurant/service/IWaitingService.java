@@ -15,4 +15,6 @@ public interface IWaitingService {
     List<Waiting> selectAll();
     StartWait startWait(int seating, String phoneNumber);
     EndWait endWait(int seat);
+    int intoTheSeat(int id);
+    EndWait outOfDate(int id);
 }
