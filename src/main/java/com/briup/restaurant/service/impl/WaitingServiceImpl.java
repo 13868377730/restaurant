@@ -1,11 +1,15 @@
 package com.briup.restaurant.service.impl;
 
+import com.briup.restaurant.bean.Table;
+import com.briup.restaurant.bean.TableExample;
 import com.briup.restaurant.bean.Waiting;
 import com.briup.restaurant.bean.WaitingExample;
 import com.briup.restaurant.bean.ex.EndWait;
 import com.briup.restaurant.bean.ex.StartWait;
+import com.briup.restaurant.mapper.TableMapper;
 import com.briup.restaurant.mapper.WaitingMapper;
 import com.briup.restaurant.mapper.ex.WaitingEXMapper;
+import com.briup.restaurant.service.IOrderingMealService;
 import com.briup.restaurant.service.IWaitingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,9 @@ public class WaitingServiceImpl implements IWaitingService {
     WaitingMapper waitingMapper;
     @Autowired
     WaitingEXMapper waitingEXMapper;
+    @Autowired
+    TableMapper tableMapper;
+
 
     @Override
     public void insert(Waiting waiting) {
@@ -75,7 +82,7 @@ public class WaitingServiceImpl implements IWaitingService {
     EndWait endWait =  waitingEXMapper.selectEnd(seat);//搜索返回信息
     waitingEXMapper.updateEnd(endWait.getId());//更新排号成功的排号信息
     waitingEXMapper.updateWait(endWait.getWaitTable());//更新该排号后的排号信息
-    endWait.setState("排号完成请入座");//数据库更新了对象还没更新
+    endWait.setState("排队完成请入座");//数据库更新了对象还没更新
     endWait.setWaitTable(0);
     return endWait;
     }
