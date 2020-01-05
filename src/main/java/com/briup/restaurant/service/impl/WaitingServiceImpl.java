@@ -2,7 +2,8 @@ package com.briup.restaurant.service.impl;
 
 import com.briup.restaurant.bean.Waiting;
 import com.briup.restaurant.bean.WaitingExample;
-import com.briup.restaurant.bean.ex.ReturnWaiting;
+import com.briup.restaurant.bean.ex.EndWait;
+import com.briup.restaurant.bean.ex.StartWait;
 import com.briup.restaurant.mapper.WaitingMapper;
 import com.briup.restaurant.mapper.ex.WaitingEXMapper;
 import com.briup.restaurant.service.IWaitingService;
@@ -52,20 +53,25 @@ public class WaitingServiceImpl implements IWaitingService {
     }
 
     @Override
-    public ReturnWaiting startWait(int seating, String phoneNumber) {
+    public StartWait startWait(int seating, String phoneNumber) {
         Waiting waiting = new Waiting();
-        ReturnWaiting returnWaiting = new ReturnWaiting();
+        StartWait startWait = new StartWait();
         //用来返回部分数据
         waiting.setTableSeating(seating);
         waiting.setPhoneNumber(phoneNumber);
         waiting.setState("等待中");
-        waiting.setWaitingTable(100);
+        waiting.setWaitingTable(waitingEXMapper.countWait()+1);
         //设置默认值
         waitingEXMapper.insertAndGetId(waiting);
-        returnWaiting.setId(waiting.getId());
-        returnWaiting.setState(waiting.getState());
-        returnWaiting.setWaitTable(waiting.getWaitingTable());
+        startWait.setId(waiting.getId());
+        startWait.setState(waiting.getState());
+        startWait.setWaitTable(waiting.getWaitingTable());
         //设置要返回的数据
-        return returnWaiting;
+        return startWait;
+    }
+
+    @Override
+    public EndWait endWait(int seat){
+    return waitingEXMapper.selectEnd(seat);
     }
 }
