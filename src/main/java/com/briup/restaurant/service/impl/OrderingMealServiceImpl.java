@@ -5,6 +5,7 @@ import com.briup.restaurant.mapper.FoodMapper;
 import com.briup.restaurant.mapper.ItemMapper;
 import com.briup.restaurant.mapper.OrderMapper;
 import com.briup.restaurant.mapper.TableMapper;
+import com.briup.restaurant.mapper.ex.OrderEXMapper;
 import com.briup.restaurant.service.IOrderingMealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,13 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
     @Autowired
     private ItemMapper itemMapper;
 
+    @Autowired
+    private OrderEXMapper orderEXMapper;
+
     @Override
     public void InsertOrder(Order order) throws RuntimeException {
-         orderMapper.insert(order);
+        orderEXMapper.InsertOrder(order);
+        System.out.println(order.getId());
 
 
     }
@@ -58,6 +63,7 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
             Item item=new Item();
             item.setFoodId(i);
             item.setOrderId(order.getId());
+            System.out.println(order.getId());
             item.setState("备餐中");
             System.out.println(item);
             itemMapper.insert(item);
