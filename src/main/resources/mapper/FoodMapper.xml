@@ -214,8 +214,17 @@
 where type LIKE #{key1} and state LIKE #{key2}
 and (type LIKE #{word} or state LIKE #{word} or name LiKE #{word})
   </select>
-  <select id="selectByName" resultType="com.briup.restaurant.bean.Food">
-   select * from restaurant_food where name =#{name}
+  <select id="selectSales" resultType="com.briup.restaurant.bean.ex.FoodSales">
+    select restaurant_food.id foodId, restaurant_food.`name`,restaurant_food.type,count( * ) AS count
+    from restaurant_food,restaurant_item,restaurant_order
+    where (restaurant_food.id=restaurant_item.food_id
+    AND restaurant_order.id=restaurant_item.order_id
+    AND restaurant_item.state="已完成"
+    AND restaurant_order.date>='2019-10-01'
+    AND restaurant_order.date &lt; '2019-10-30'
+    )
+    GROUP BY restaurant_food.id
+    ORDER BY count DESC
   </select>
 
 </mapper>
