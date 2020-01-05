@@ -10,5 +10,6 @@ public interface IOrderManageService {
     List<Map<String, Object>> selectAll() throws RuntimeException;
     Map<String,Object> showDetailById(int id) throws RuntimeException;
     void updateTableById(int orderId,int tableId) throws RuntimeException;
-
+    void discountById(int orderId,double price) throws RuntimeException;
+    void deleteFoodById(int orderId, int foodId) throws RuntimeException;
 }
