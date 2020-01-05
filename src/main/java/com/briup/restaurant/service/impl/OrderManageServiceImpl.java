@@ -95,6 +95,7 @@ public class OrderManageServiceImpl implements IOrderManageService {
         ItemExample example = new ItemExample();
         example.createCriteria().andFoodIdEqualTo(foodId).andOrderIdEqualTo(orderId);
         List<Item> items = itemMapper.selectByExample(example);
+        int count=0;
         for(Item item:items){
             if ("未开始".equals(item.getState())){
                 //在菜单项中删除记录
@@ -105,8 +106,11 @@ public class OrderManageServiceImpl implements IOrderManageService {
                 order.setPrice(order.getPrice() - food.getPrice());
                 orderMapper.updateByPrimaryKey(order);
             }else{
-                throw new RuntimeException("该菜品备餐中或已完成，不可取消");
+                count++;
             }
+        }
+        if (count != 0){
+            throw new RuntimeException("该菜品有"+count+"道已完成或备餐中,其余已取消");
         }
     }
 
@@ -131,4 +135,5 @@ public class OrderManageServiceImpl implements IOrderManageService {
         }
         return null;
     }
+
 }
