@@ -26,13 +26,16 @@
         (select min(waiting_table)
         from restaurant_waiting
         where table_seating = #{seat})
+        and state = '等待中'
     </select>
     <update id="updateEnd">
-        update (select * from restaurant_waiting where id = #{})
-        set state value "排队完成请入座"
+        update restaurant_waiting
+        set state = '排队完成请入座', waiting_table = 0
+        where id = #{id}
     </update>
     <update id="updateWait">
-        update (select * from restaurant_waiting where state = "等待中")
-        set waiting_table value waiting_table-1
+        update restaurant_waiting
+        set waiting_table = waiting_table-1
+        where state = '等待中'
     </update>
 </mapper>
