@@ -83,4 +83,22 @@
         select name,price from restaurant_food where id=#{id}
     </select>
 
+
+<!--楠哥！！我在这里写了一个方法-->
+    <insert id="InsertOrder" parameterType="com.briup.restaurant.bean.Order">
+        <selectKey keyProperty="id" order="AFTER" resultType="int" >
+            select LAST_INSERT_ID()
+        </selectKey>
+
+    insert into restaurant_order (id, state, price,
+      remark, date, time, type,
+      name, phone, address,
+      user_id, table_id)
+    values (#{id,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE},
+      #{remark,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{time,jdbcType=TIME}, #{type,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{userId,jdbcType=INTEGER}, #{tableId,jdbcType=INTEGER})
+  </insert>
+
+
 </mapper>

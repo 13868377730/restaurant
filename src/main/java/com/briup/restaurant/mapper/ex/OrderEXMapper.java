@@ -1,5 +1,7 @@
 package com.briup.restaurant.mapper.ex;
 
+import com.briup.restaurant.bean.Order;
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,4 +11,5 @@ public interface OrderEXMapper {
     Map<String,Object> showInDetailById(int id);
     List<Map<String,Object>> selectByUser(String word);
     List<Map<String,Object>> selectByState(String word);
+    void InsertOrder(Order order);
 }
