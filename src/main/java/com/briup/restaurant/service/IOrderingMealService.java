@@ -12,5 +12,6 @@ public interface IOrderingMealService {
     void UpdateTable(Table table) throws RuntimeException;
     void InsertItems(Order order, int[] num) throws RuntimeException;
     List<Food> IsHasFood(int[] num) throws RuntimeException;
-
+    boolean IsMatch(int id,String name) throws RuntimeException;
+    double Check(int[] num) throws RuntimeException;
 }

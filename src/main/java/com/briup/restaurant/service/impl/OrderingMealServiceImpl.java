@@ -1,10 +1,7 @@
 package com.briup.restaurant.service.impl;
 
 import com.briup.restaurant.bean.*;
-import com.briup.restaurant.mapper.FoodMapper;
-import com.briup.restaurant.mapper.ItemMapper;
-import com.briup.restaurant.mapper.OrderMapper;
-import com.briup.restaurant.mapper.TableMapper;
+import com.briup.restaurant.mapper.*;
 import com.briup.restaurant.mapper.ex.OrderEXMapper;
 import com.briup.restaurant.service.IOrderingMealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,7 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
 
 
     @Autowired
-    private OrderMapper orderMapper;
+    private UserMapper userMapper;
 
     @Autowired
     private TableMapper tableMapper;
@@ -64,7 +61,7 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
             item.setFoodId(i);
             item.setOrderId(order.getId());
             System.out.println(order.getId());
-            item.setState("备餐中");
+            item.setState("未开始");
             System.out.println(item);
             itemMapper.insert(item);
         }
@@ -81,6 +78,39 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
         //返回已经下架的信息
         System.out.println(list);
         return list;
+    }
+
+    @Override
+    public boolean IsMatch(int id, String name) throws RuntimeException {
+        //不存在id
+        if (userMapper.selectByPrimaryKey(id)==null){
+            System.out.println("不存在id");
+            return false;
+        }
+        //存在id
+        else{
+            System.out.println("存在id");
+            UserExample example=new UserExample();
+            example.createCriteria().andNameEqualTo(name).andIdEqualTo(id);
+            //id与名字是否匹配
+            if (userMapper.selectByExample(example).size()==0){
+                System.out.println("没找到/不匹配");
+                return false;
+            }
+        }
+        System.out.println("匹配");
+        return true;
+    }
+
+    @Override
+    public double Check(int[] num) throws RuntimeException {
+        double sum=0.0;
+        for (int i:num){
+            Food food=foodMapper.selectByPrimaryKey(i);
+            sum+=food.getPrice();
+        }
+        System.out.println(sum);
+        return sum;
     }
 
 
