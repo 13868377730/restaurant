@@ -14,4 +14,7 @@ public interface IOrderingMealService {
     List<Food> IsHasFood(int[] num) throws RuntimeException;
     boolean IsMatch(int id,String name) throws RuntimeException;
     double Check(int[] num) throws RuntimeException;
+    Order SelectOrder(int id) throws RuntimeException;
+    void UpdateAddFoodPrice(int id,double price) throws RuntimeException;
+    boolean IsOrderExistence(int id)throws RuntimeException;
 }

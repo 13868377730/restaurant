@@ -19,6 +19,9 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
     private UserMapper userMapper;
 
     @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
     private TableMapper tableMapper;
 
     @Autowired
@@ -111,6 +114,26 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
         }
         System.out.println(sum);
         return sum;
+    }
+
+    @Override
+    public Order SelectOrder(int id) throws RuntimeException {
+        return orderMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public void UpdateAddFoodPrice(int id, double price) throws RuntimeException {
+        Order order=orderMapper.selectByPrimaryKey(id);
+        order.setPrice(price);
+        orderMapper.updateByPrimaryKey(order);
+    }
+
+    @Override
+    public boolean IsOrderExistence(int id) throws RuntimeException {
+        if (orderMapper.selectByPrimaryKey(id)==null){
+            return false;
+        }
+        else return true;
     }
 
 
