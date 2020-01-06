@@ -128,7 +128,8 @@ public class OrderingMealController {
         }
         //存在下架情况
         else {
-            return MessageUtil.success(l+"食物已下架,重新筛选");        }
+            return MessageUtil.success(l+" 食物已下架,重新筛选");
+        }
     }
 
     @GetMapping("/addfood")
@@ -144,6 +145,7 @@ public class OrderingMealController {
             if (l.size()==0){
                 double price=orderingMealService.SelectOrder(id).getPrice();
                 System.out.println(price);
+                double p=price;
                 price+=orderingMealService.Check(num);
                 System.out.println(price);
                 //更新订单价格
@@ -151,11 +153,11 @@ public class OrderingMealController {
 
                 Order order=orderingMealService.SelectOrder(id);
                 orderingMealService.InsertItems(order,num);
-                return MessageUtil.success("加菜成功");
+                return MessageUtil.success("加菜成功,订单原有金额为："+p+"  加菜金额为："+orderingMealService.Check(num)+"  订单加菜后总金额为："+price);
             }
             //菜品下架
             else {
-                return MessageUtil.success(l+"食物已下架,重新筛选");
+                return MessageUtil.success(l+" 食物已下架,重新筛选");
             }
         }
         //订单不存在

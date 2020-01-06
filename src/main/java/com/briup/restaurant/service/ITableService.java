@@ -11,4 +11,5 @@ public interface ITableService {
     void deleteSome(int[] ids) throws RuntimeException;
     void AddOrUpdate(Table table) throws RuntimeException;
     void changeByid(int id,String state) throws RuntimeException;
+    Table findById(int id) throws RuntimeException;
 }

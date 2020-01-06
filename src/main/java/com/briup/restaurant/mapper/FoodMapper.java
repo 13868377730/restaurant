@@ -29,8 +29,11 @@ public interface FoodMapper {
     int updateByPrimaryKeySelective(Food record);
 
     int updateByPrimaryKey(Food record);
-   List<Food>  selectBy(String key1,String key2,String word);
-   List<FoodSales> selectSales(String date1,String date2);
 
-
+    List<Food>  selectBy(String key1,String key2,String word);
+    List<FoodSales> selectSales(String date1,String date2);
+    List<FoodSales> selectAll();
+    List<FoodSales> selectAfter(String date1);
+    List<FoodSales> selectBefore(String date2);
+    List<FoodSales> selectMonth(int year,int month);
 }

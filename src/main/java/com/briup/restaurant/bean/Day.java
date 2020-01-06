@@ -1,9 +1,14 @@
 package com.briup.restaurant.bean;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@ApiModel
 public class Day implements Serializable {
+    @ApiModelProperty()
     private Integer id;
 
     private Date day;

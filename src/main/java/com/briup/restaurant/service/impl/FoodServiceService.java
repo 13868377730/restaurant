@@ -8,6 +8,7 @@ import com.briup.restaurant.service.IFoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -66,9 +67,40 @@ public class FoodServiceService implements IFoodService {
 
     @Override
     public List<FoodSales> selectSales(String date1, String date2) {
-     List<FoodSales> foodSales=   foodMapper.selectSales(date1,date2);
-        return foodSales;
+
+
+         if ((date1 == null || "".equals(date1)) && (date2 == null || "".equals(date2))) {
+             List<FoodSales> foodSales = foodMapper.selectAll();
+
+             return foodSales;
+         }
+        else if ((date1 != null || !"".equals(date1)) && (date2 == null || "".equals(date2))) {
+             List<FoodSales> foodSales = foodMapper.selectAfter(date1);
+
+             return foodSales;
+         }
+        else if ((date1 == null || "".equals(date1)) && (date2 != null || !"".equals(date2))) {
+             List<FoodSales> foodSales = foodMapper.selectBefore(date2);
+
+             return foodSales;
+         }
+       else if((date1!=null||!"".equals(date1))&&(date2!=null||!"".equals(date2))) {
+            List<FoodSales> foodSales = foodMapper.selectSales(date1, date2);
+
+            return foodSales;
+        }
+
+
+        return null;
     }
 
-
+    @Override
+    public List<FoodSales> selectMonth() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1;
+        System.out.println("年份: " + year);
+        System.out.println("月份: " + month);
+        return foodMapper.selectMonth(year,month);
+    }
 }

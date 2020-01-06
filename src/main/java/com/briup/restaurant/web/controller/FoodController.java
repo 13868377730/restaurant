@@ -1,6 +1,7 @@
 package com.briup.restaurant.web.controller;
 
 import com.briup.restaurant.bean.Food;
+import com.briup.restaurant.bean.ex.FoodSales;
 import com.briup.restaurant.service.IFoodService;
 import com.briup.restaurant.util.Message;
 import com.briup.restaurant.util.MessageUtil;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,13 +24,13 @@ public class FoodController {
     @Autowired
     private IFoodService ifoodService;
 
-    @GetMapping("/addFood")
+    @PostMapping("/addFood")
     @ApiOperation("添加菜品")
     public Message addFood(Food food){
 ifoodService.addOrUpdateFood(food);
         return MessageUtil.success("添加成功");
     }
-    @GetMapping("/updateFood")
+    @PostMapping("/updateFood")
     @ApiOperation("修改菜品")
     public Message updateFood(Food food){
         ifoodService.addOrUpdateFood(food);
@@ -58,20 +60,26 @@ ifoodService.addOrUpdateFood(food);
         return MessageUtil.success(foods);
     }
 @GetMapping("/selectByState")
-@ApiOperation("查询所有在架从菜品")
+@ApiOperation("查询所有在架菜品")
 public Message selectByState(){
 
         return MessageUtil.success(ifoodService.selectByState());
 }
     @GetMapping("/selectSales")
     @ApiOperation("查看菜品销量")
-    @ApiImplicitParams({@ApiImplicitParam(name= "date1",value="开始日期",paramType = "query" ,dataType = "String"),
+    @ApiImplicitParams({@ApiImplicitParam(name= "date1",value="开始日期 YYYY-MM-dd",paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name= "date2",value="结束日期",paramType = "query" ,dataType = "String")
     })
-public Message selectSales(String date1,String date2){
-
-        return MessageUtil.success(ifoodService.selectSales(date1, date2));
+    public Message selectSales(String date1,String date2){
+        List<FoodSales> foodSales=  ifoodService.selectSales(date1, date2);
+        return MessageUtil.success(foodSales);
 }
+
+    @GetMapping("/selectMonth")
+    @ApiOperation("查看当前月份菜品销量")
+    public Message selectMonth(){
+        return MessageUtil.success(ifoodService.selectMonth());
+    }
 
 
 }

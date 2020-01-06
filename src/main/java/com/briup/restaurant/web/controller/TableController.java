@@ -34,6 +34,10 @@ public class TableController {
 
     @GetMapping("/findBySth")
     @ApiOperation("条件查询")
+    @ApiImplicitParams ({
+            @ApiImplicitParam(name = "key", value = "查询条件", paramType = "query", dataType = "String"),
+            @ApiImplicitParam(name = "word", value = "关键字", paramType= "query", dataType = "String")
+    })
     public Message findBySth(String key,String word){
         List<Table> list=tableService.findBySth(key, word);
         return MessageUtil.success(list);
@@ -43,8 +47,14 @@ public class TableController {
     @ApiOperation("通过id删除")
     @ApiImplicitParam(name = "id",value = "id",paramType = "query",dataType = "int",required = true)
     public Message deleteById(int id){
-        tableService.deleteById(id);
-        return MessageUtil.success();
+        Table table= tableService.findById(id);
+        if (table==null){
+            return MessageUtil.success("没有此餐桌");
+        }else {
+            tableService.deleteById(id);
+            return MessageUtil.success("删除成功");
+        }
+
     }
 
 
@@ -57,9 +67,13 @@ public class TableController {
 
     @PostMapping("/Add")
     @ApiOperation("添加餐桌")
+
     public Message Add(Table table){
-        tableService.AddOrUpdate(table);
-        return MessageUtil.success();
+
+            tableService.AddOrUpdate(table);
+            return MessageUtil.success("添加成功");
+
+
     }
 
 
@@ -67,8 +81,14 @@ public class TableController {
     @ApiOperation("通过id修改餐桌")
 
     public Message UpdateById(Table table){
-        tableService.AddOrUpdate(table);
-        return MessageUtil.success();
+        Table table1= tableService.findById(table.getId());
+        if (table1==null){
+            return MessageUtil.success("没有此餐桌");
+        }else {
+            tableService.AddOrUpdate(table);
+            return MessageUtil.success("修改成功");
+        }
+
     }
 
     @PostMapping("/changeStateById")
@@ -78,8 +98,14 @@ public class TableController {
         @ApiImplicitParam(name = "state", value = "状态", paramType = "query", dataType = "String", required = true)
     })
     public Message changeStateById(int id,String state){
-        tableService.changeByid(id,state);
-        return MessageUtil.success();
+        Table table= tableService.findById(id);
+        if (table==null){
+            return MessageUtil.success("没有此餐桌");
+        }else {
+            tableService.changeByid(id,state);
+            return MessageUtil.success("修改成功");
+        }
+
     }
 
 }
