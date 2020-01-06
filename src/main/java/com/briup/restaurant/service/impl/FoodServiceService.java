@@ -99,8 +99,6 @@ public class FoodServiceService implements IFoodService {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
-        System.out.println("年份: " + year);
-        System.out.println("月份: " + month);
         return foodMapper.selectMonth(year,month);
     }
 }
