@@ -48,13 +48,16 @@ public class FoodServiceService implements IFoodService {
         word="%"+word+"%";
 
         List<Food> foods=  foodMapper.selectBy(key1,key2,word);
-        return foods;
+        if (foods.isEmpty()){ throw new RuntimeException("无此数据");}
+        else{return  foods;}
+
     }
 
     @Override
     public  Food selectById(int id) throws RuntimeException {
+
      Food food=   foodMapper.selectByPrimaryKey(id);
-        return  food;
+     return  food;
     }
 
     @Override
@@ -62,11 +65,13 @@ public class FoodServiceService implements IFoodService {
         FoodExample example=new FoodExample();
         example.createCriteria().andStateEqualTo("在架");
         List<Food> foods=foodMapper.selectByExample(example);
-        return foods;
+        return  foods;
+
+
     }
 
     @Override
-    public List<FoodSales> selectSales(String date1, String date2) {
+    public List<FoodSales> selectSales(String date1, String date2) throws  RuntimeException{
 
 
          if ((date1 == null || "".equals(date1)) && (date2 == null || "".equals(date2))) {
@@ -95,10 +100,15 @@ public class FoodServiceService implements IFoodService {
     }
 
     @Override
-    public List<FoodSales> selectMonth() {
+    public List<FoodSales> selectMonth() throws  RuntimeException{
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
         return foodMapper.selectMonth(year,month);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        foodMapper.deleteByPrimaryKey(id);
     }
 }

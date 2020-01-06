@@ -59,10 +59,11 @@ public class EmployeeController {
         int employee6=employeeService.deleteByExample(example);
         return  MessageUtil.success(employee6);
     }
-    //@GetMapping("/findAll")
+    @GetMapping("/findAll")
     @ApiOperation("/查询所有")
     public  Message findAll(){
         List<Employee> employees=employeeService.findAll();
         return MessageUtil.success(employees);
+
     }
 }

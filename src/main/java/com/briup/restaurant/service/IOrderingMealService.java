@@ -10,10 +10,10 @@ public interface IOrderingMealService {
     void InsertOrder(Order order) throws RuntimeException;
     List<Table> IsHasTable(int num) throws RuntimeException;
     void UpdateTable(Table table) throws RuntimeException;
-    void InsertItems(Order order, int[] num) throws RuntimeException;
-    List<Food> IsHasFood(int[] num) throws RuntimeException;
+    void InsertItems(Order order, Integer[] num) throws RuntimeException;
+    List<Food> IsHasFood(Integer[] num) throws RuntimeException;
     boolean IsMatch(int id,String name) throws RuntimeException;
-    double Check(int[] num) throws RuntimeException;
+    double Check(Integer[] num) throws RuntimeException;
     Order SelectOrder(int id) throws RuntimeException;
     void UpdateAddFoodPrice(int id,double price) throws RuntimeException;
     boolean IsOrderExistence(int id)throws RuntimeException;
