@@ -79,12 +79,16 @@ public class WaitingServiceImpl implements IWaitingService {
 
     @Override
     public EndWait endWait(int seat){
-    EndWait endWait =  waitingEXMapper.selectEnd(seat);//搜索返回信息
-    waitingEXMapper.updateEnd(endWait.getId());//更新排号成功的排号信息
-    waitingEXMapper.updateWait(endWait.getWaitTable());//更新该排号后的排号信息
-    endWait.setState("排队完成请入座");//数据库更新了对象还没更新
-    endWait.setWaitTable(0);
-    return endWait;
+        EndWait endWait =  waitingEXMapper.selectEnd(seat);//搜索返回信息
+        if(endWait == null){
+            return null;
+        }else {
+            waitingEXMapper.updateEnd(endWait.getId());//更新排号成功的排号信息
+            waitingEXMapper.updateWait(endWait.getWaitTable());//更新该排号后的排号信息
+            endWait.setState("排队完成请入座");//数据库更新了对象还没更新
+            endWait.setWaitTable(0);
+            return endWait;
+        }
     }
 
     @Override

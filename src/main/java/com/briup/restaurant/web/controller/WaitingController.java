@@ -99,12 +99,15 @@ public class WaitingController {
     Message endWait(int seat){
         List<Table> tables = iTableService.findBySth("桌型",seat+"");
         List<Table> tables1 = iOrderingMealService.IsHasTable(seat);
+        EndWait endWait = iWaitingService.endWait(seat);
         if (tables == null||tables.size() == 0){//判断有无该桌型
             return MessageUtil.success("没有该桌型");
         }else if(tables1.size() == 0){
             return MessageUtil.success("该桌型没有空桌");
+        } else if(endWait == null){
+            return MessageUtil.success("该桌型无需求");
         } else {
-            return MessageUtil.success(iWaitingService.endWait(seat));
+            return MessageUtil.success(endWait);
         }
     }
 
@@ -117,7 +120,7 @@ public class WaitingController {
         }else if (waiting.getState() == "排队完成请入座") {
             return MessageUtil.success(iWaitingService.outOfDate(id));
         }else {
-            return MessageUtil.success("该排号还未排到队首");
+            return MessageUtil.success("该排号不处于排号完成状态");
         }
     }
 
