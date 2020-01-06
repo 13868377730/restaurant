@@ -27,6 +27,7 @@ public class OrderManageController {
     @ApiOperation(value = "查询所有订单")
     public Message selectAll(){
         return MessageUtil.success(iOrderManageService.selectAll());
+
     }
 
     @GetMapping("/selectdetailbyid")

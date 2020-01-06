@@ -39,6 +39,7 @@ public class OrderManageServiceImpl implements IOrderManageService {
     //用sql语句确保最新订单在最前显示
     public List<Map<String, Object>> selectAll() throws RuntimeException {
         return orderEXMapper.selectAll();
+
     }
 
 
@@ -96,11 +97,11 @@ public class OrderManageServiceImpl implements IOrderManageService {
     }
 
     @Override
-    public void deleteFoodById(int orderId, int foodId) throws RuntimeException {
+    public void deleteFoodById(int orderId, int itemId) throws RuntimeException {
         ItemExample example = new ItemExample();
         example.createCriteria().andFoodIdEqualTo(foodId).andOrderIdEqualTo(orderId);
         List<Item> items = itemMapper.selectByExample(example);
-        int count=0;
+        int unCount=0,count=0;
         for(Item item:items){
             if ("未开始".equals(item.getState())){
                 //在菜单项中删除记录
@@ -110,12 +111,15 @@ public class OrderManageServiceImpl implements IOrderManageService {
                 Food food=foodMapper.selectByPrimaryKey(foodId);
                 order.setPrice(order.getPrice() - food.getPrice());
                 orderMapper.updateByPrimaryKey(order);
+                unCount++;
             }else{
                 count++;
             }
         }
-        if (count != 0){
-            throw new RuntimeException("该菜品有"+count+"道已完成或备餐中,其余已取消");
+        if (count != 0&& count!=items.size()){
+            throw new RuntimeException("该菜品共有"+items.size()+"道，其中"+count+"已完成或备餐中,其余已取消");
+        }else if(count != 0&& count==items.size()){
+            throw new RuntimeException("该菜品共有"+items.size()+"道，均已完成或备餐中，无法取消");
         }
     }
 
