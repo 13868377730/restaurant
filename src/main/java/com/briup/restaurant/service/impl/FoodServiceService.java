@@ -66,9 +66,30 @@ public class FoodServiceService implements IFoodService {
 
     @Override
     public List<FoodSales> selectSales(String date1, String date2) {
-     List<FoodSales> foodSales=   foodMapper.selectSales(date1,date2);
-        return foodSales;
+        System.out.println("lll");
+
+         if ((date1 == null || "".equals(date1)) && (date2 == null || "".equals(date2))) {
+             List<FoodSales> foodSales = foodMapper.selectAll();
+             System.out.println("2");
+             return foodSales;
+         }
+        else if ((date1 != null || !"".equals(date1)) && (date2 == null || "".equals(date2))) {
+             List<FoodSales> foodSales = foodMapper.selectAfter(date1);
+             System.out.println("3");
+             return foodSales;
+         }
+        else if ((date1 == null || "".equals(date1)) && (date2 != null || !"".equals(date2))) {
+             List<FoodSales> foodSales = foodMapper.selectBefore(date2);
+             System.out.println("4");
+             return foodSales;
+         }
+       else if((date1!=null||!"".equals(date1))&&(date2!=null||!"".equals(date2))) {
+            List<FoodSales> foodSales = foodMapper.selectSales(date1, date2);
+            System.out.println("1");
+            return foodSales;
+        }
+
+        System.out.println("oth");
+        return null;
     }
-
-
 }
