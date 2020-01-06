@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -61,8 +62,18 @@ public class TableController {
     @GetMapping("/deleteSome")
     @ApiOperation("批量删除")
     public Message deleteSome(int[] ids){
+        List<Integer> listY=new ArrayList<>();
+        List<Integer> listN=new ArrayList<>();
+        for (int id:ids){
+            if(tableService.findById(id)==null){
+                listN.add(id);
+            }else {
+                listY.add(id);
+            }
+
+        }
         tableService.deleteSome(ids);
-        return MessageUtil.success();
+        return MessageUtil.success(listY+"删除成功"+listN+"删除失败");
     }
 
     @PostMapping("/Add")
@@ -109,3 +120,4 @@ public class TableController {
     }
 
 }
+
