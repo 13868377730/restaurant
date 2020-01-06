@@ -35,4 +35,5 @@ public interface FoodMapper {
     List<FoodSales> selectAll();
     List<FoodSales> selectAfter(String date1);
     List<FoodSales> selectBefore(String date2);
+    List<FoodSales> selectMonth(int year,int month);
 }

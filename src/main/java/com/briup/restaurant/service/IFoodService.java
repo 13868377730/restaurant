@@ -13,5 +13,6 @@ public interface IFoodService {
      Food selectById(int id) throws  RuntimeException;
      List<Food> selectByState() throws  RuntimeException;
     List<FoodSales> selectSales(String date1, String date2) throws  RuntimeException;
+    List<FoodSales> selectMonth();
 
 }

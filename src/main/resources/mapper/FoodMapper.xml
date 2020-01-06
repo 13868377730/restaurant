@@ -264,4 +264,19 @@ and (type LIKE #{word} or state LIKE #{word} or name LiKE #{word})
     GROUP BY restaurant_food.id
     ORDER BY count DESC
   </select>
+
+  <select id="selectMonth" resultType="com.briup.restaurant.bean.ex.FoodSales">
+     select restaurant_food.id foodId, restaurant_food.`name`,restaurant_food.type,count( * ) AS count
+    from restaurant_food,restaurant_item,restaurant_order
+    where (restaurant_food.id=restaurant_item.food_id
+    AND restaurant_order.id=restaurant_item.order_id
+    AND restaurant_item.state="已完成"
+and year(restaurant_order.date)=#{year}
+and month(restaurant_order.date)=#{month}
+    )
+    GROUP BY restaurant_food.id
+    ORDER BY count DESC
+		LIMIT 5
+  </select>
+
 </mapper>
