@@ -35,7 +35,7 @@ public class OrderingMealController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "num",value = "就餐人数",dataType = "int",paramType = "query",example = "2/4/8人桌",required = true),
             @ApiImplicitParam(name = "remark",value = "点餐备注",dataType = "String",paramType = "query",example ="备注菜品口味" ),
-            @ApiImplicitParam(name = "name",value = "姓名",dataType = "String",paramType = "query",example = "凤尾虾",required = true),
+            @ApiImplicitParam(name = "name",value = "姓名",dataType = "String",paramType = "query",example = "凤尾虾"),
             @ApiImplicitParam(name = "user_id",value = "会员id",dataType = "int",paramType = "query",example = "会员id（选填）"),
             @ApiImplicitParam(name = "ordering",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3")
     })
