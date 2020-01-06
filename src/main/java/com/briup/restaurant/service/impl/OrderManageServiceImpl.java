@@ -98,28 +98,16 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
     @Override
     public void deleteFoodById(int orderId, int itemId) throws RuntimeException {
-        ItemExample example = new ItemExample();
-        example.createCriteria().andFoodIdEqualTo(foodId).andOrderIdEqualTo(orderId);
-        List<Item> items = itemMapper.selectByExample(example);
-        int unCount=0,count=0;
-        for(Item item:items){
-            if ("未开始".equals(item.getState())){
-                //在菜单项中删除记录
-                itemMapper.deleteByPrimaryKey(item.getId());
-                //在订单表中减去对应的价钱
-                Order order = orderMapper.selectByPrimaryKey(orderId);
-                Food food=foodMapper.selectByPrimaryKey(foodId);
-                order.setPrice(order.getPrice() - food.getPrice());
-                orderMapper.updateByPrimaryKey(order);
-                unCount++;
-            }else{
-                count++;
-            }
-        }
-        if (count != 0&& count!=items.size()){
-            throw new RuntimeException("该菜品共有"+items.size()+"道，其中"+count+"已完成或备餐中,其余已取消");
-        }else if(count != 0&& count==items.size()){
-            throw new RuntimeException("该菜品共有"+items.size()+"道，均已完成或备餐中，无法取消");
+        if ("未开始".equals(itemMapper.selectByPrimaryKey(itemId))) {
+            //在菜单项中删除记录
+            itemMapper.deleteByPrimaryKey(itemId);
+            //在订单表中减去对应的价钱
+            Order order = orderMapper.selectByPrimaryKey(orderId);
+            Food food = foodMapper.selectByPrimaryKey(itemId);
+            order.setPrice(order.getPrice() - food.getPrice());
+            orderMapper.updateByPrimaryKey(order);
+        }else{
+            throw  new RuntimeException("该订单项备餐中或已出餐");
         }
     }
 
@@ -158,14 +146,27 @@ public class OrderManageServiceImpl implements IOrderManageService {
     @Override
     public void deleteOrderById(int id) throws RuntimeException {
         if("进行中".equals(orderMapper.selectByPrimaryKey(id).getState())){
+            int count=0;
             //删除订单项
             ItemExample example = new ItemExample();
             example.createCriteria().andOrderIdEqualTo(id);
             List<Item> items = itemMapper.selectByExample(example);
+            //判断订单中所有订单项的状态
             for (Item item:items){
-                itemMapper.deleteByPrimaryKey(item.getId());
+                if("未开始".equals(itemMapper.selectByPrimaryKey(item.getId()).getState())){
+                }else {
+                    count++;
+                }
             }
-            orderMapper.deleteByPrimaryKey(id);
+            //有菜已完成或备餐中不可取消
+            if (count > 0 ){
+                throw new RuntimeException("该订单中有"+count+"道菜品已完成或备餐中");
+            }else {
+                for (Item item:items){
+                    itemMapper.deleteByPrimaryKey(item.getId());
+                }
+                orderMapper.deleteByPrimaryKey(id);
+            }
         }else{
             throw new RuntimeException("该订单已核对或已买单，无法取消");
         }
