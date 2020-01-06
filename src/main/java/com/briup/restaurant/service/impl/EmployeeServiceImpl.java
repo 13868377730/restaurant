@@ -52,8 +52,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public List<Employee> findAll() throws RuntimeException {
         EmployeeExample employeeExample=new EmployeeExample();
-       Employee employee= (Employee) employeeMapper.findAll(employeeExample);
-       return (List<Employee>) employee;
+        List<Employee> employees=employeeMapper.findAll(employeeExample);
+        return employees;
     }
 
 }
