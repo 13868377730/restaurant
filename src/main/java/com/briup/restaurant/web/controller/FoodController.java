@@ -67,12 +67,19 @@ public Message selectByState(){
 }
     @GetMapping("/selectSales")
     @ApiOperation("查看菜品销量")
-    @ApiImplicitParams({@ApiImplicitParam(name= "date1",value="开始日期",paramType = "query" ,dataType = "String"),
+    @ApiImplicitParams({@ApiImplicitParam(name= "date1",value="开始日期 YYYY-MM-dd",paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name= "date2",value="结束日期",paramType = "query" ,dataType = "String")
     })
     public Message selectSales(String date1,String date2){
         List<FoodSales> foodSales=  ifoodService.selectSales(date1, date2);
         return MessageUtil.success(foodSales);
 }
+
+    @GetMapping("/selectMonth")
+    @ApiOperation("查看当前月份菜品销量")
+    public Message selectMonth(){
+        return MessageUtil.success(ifoodService.selectMonth());
+    }
+
 
 }

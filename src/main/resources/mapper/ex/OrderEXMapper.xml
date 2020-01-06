@@ -76,7 +76,7 @@
     </select>
 
     <select id="selectItems" resultMap="items">
-        select food_id,state from restaurant_item where order_id=#{id}
+        select id,food_id,state from restaurant_item where order_id=#{id}
     </select>
 
     <select id="selectFood" resultMap="food">

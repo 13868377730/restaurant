@@ -8,9 +8,7 @@ import com.briup.restaurant.service.ITableService;
 import com.briup.restaurant.service.IWaitingService;
 import com.briup.restaurant.util.Message;
 import com.briup.restaurant.util.MessageUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,13 +74,17 @@ public class WaitingController {
 
     @PostMapping("startWait")
     @ApiOperation("取号排队")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "seat", value = "需求座位数", required = true, paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "phoneNumber", value = "联系电话", required = true, paramType = "query", dataType = "String")
+    })
     Message startWait(int seat, String phoneNumber){
         List<Table> tables =
                 iTableService.findBySth("桌型",seat+"");
         //判断有无该桌型
         List<Table> tables1 = iOrderingMealService.IsHasTable(seat);
         //判断有无空桌
-        if (tables == null){
+        if (tables.size() == 0){
             return MessageUtil.success("没有该桌型");
         }else if(tables1.size() > 0){
             return MessageUtil.success("该桌型有空桌，请直接入座");
@@ -97,12 +99,15 @@ public class WaitingController {
     Message endWait(int seat){
         List<Table> tables = iTableService.findBySth("桌型",seat+"");
         List<Table> tables1 = iOrderingMealService.IsHasTable(seat);
+        EndWait endWait = iWaitingService.endWait(seat);
         if (tables == null||tables.size() == 0){//判断有无该桌型
             return MessageUtil.success("没有该桌型");
         }else if(tables1.size() == 0){
             return MessageUtil.success("该桌型没有空桌");
+        } else if(endWait == null){
+            return MessageUtil.success("该桌型无需求");
         } else {
-            return MessageUtil.success(iWaitingService.endWait(seat));
+            return MessageUtil.success(endWait);
         }
     }
 
@@ -115,15 +120,23 @@ public class WaitingController {
         }else if (waiting.getState() == "排队完成请入座") {
             return MessageUtil.success(iWaitingService.outOfDate(id));
         }else {
-            return MessageUtil.success("该排号还未排到队首");
+            return MessageUtil.success("该排号不处于排号完成状态");
         }
     }
 
     @PostMapping("IntoTheSeat")
     @ApiOperation("排号完成进入座位")
+    @ApiImplicitParam(name = "id", value = "排号id", paramType = "query", dataType = "int", required = true)
     Message IntoTheSeat(int id){
-        return MessageUtil.success("排号"+iWaitingService.intoTheSeat(id)+
-                "已入座,排号记录已删除");//该方法删除排号并返回id
+        Waiting waiting = iWaitingService.selectById(id);
+        if(waiting == null){
+            return MessageUtil.success("该排号不存在");
+        }else if(!"排队完成请入座".equals(waiting.getState())){
+            return MessageUtil.success("该排号不处于排号完成状态");
+        }else {
+            return MessageUtil.success("排号" + iWaitingService.intoTheSeat(id) +
+                    "已入座,排号记录已删除");//该方法删除排号并返回id
+        }
     }
 
 }
