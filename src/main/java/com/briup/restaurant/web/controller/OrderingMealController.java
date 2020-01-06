@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,9 +37,9 @@ public class OrderingMealController {
             @ApiImplicitParam(name = "remark",value = "点餐备注",dataType = "String",paramType = "query",example ="备注菜品口味" ),
             @ApiImplicitParam(name = "name",value = "姓名",dataType = "String",paramType = "query",example = "凤尾虾",required = true),
             @ApiImplicitParam(name = "user_id",value = "会员id",dataType = "int",paramType = "query",example = "会员id（选填）"),
-            @ApiImplicitParam(name = "ordering",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3",required = true)
+            @ApiImplicitParam(name = "ordering",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3")
     })
-    public Message NowEat(int num, String remark,String name,int user_id, int [] ordering) throws ParseException {
+    public Message NowEat(int num, String remark,String name,int user_id,  int [] ordering) throws ParseException {
        Order order=new Order();
        order.setRemark(remark);
        order.setUserId(user_id);
@@ -116,11 +113,11 @@ public class OrderingMealController {
     @PostMapping("/takeaway")
     @ApiOperation(value = "外卖点餐")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "name",value = "姓名",dataType = "String",paramType = "query",example = "凤尾虾",required = true),
+            @ApiImplicitParam(name = "name",value = "姓名",dataType = "String",paramType = "query",example = "凤尾虾"),
             @ApiImplicitParam(name = "remark",value = "点餐备注",dataType = "String",paramType = "query",example = "备注菜品口味"),
             @ApiImplicitParam(name = "phone",value = "联系方式",dataType = "String",paramType = "query",example = "联系方式",required = true),
             @ApiImplicitParam(name = "address",value = "地址",dataType = "String",paramType = "query",example = "送餐地址",required = true),
-            @ApiImplicitParam(name = "num",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3",required = true)
+            @ApiImplicitParam(name = "num",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3")
     })
     public Message Takeaway(String name,String remark,String phone,String address,int[] num) throws ParseException {
         Order order=new Order();
@@ -160,7 +157,7 @@ public class OrderingMealController {
     @ApiOperation(value = "堂食加菜")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id",value = "订单id",dataType = "int",paramType = "query",example = "1",required = true),
-            @ApiImplicitParam(name = "num",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3",required = true)
+            @ApiImplicitParam(name = "num",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3")
     })
     public Message AddFood(int id,int[] num){
         //订单存在
