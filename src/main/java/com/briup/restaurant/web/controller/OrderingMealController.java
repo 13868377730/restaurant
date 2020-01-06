@@ -39,9 +39,11 @@ public class OrderingMealController {
             @ApiImplicitParam(name = "user_id",value = "会员id",dataType = "int",paramType = "query",example = "会员id（选填）"),
             @ApiImplicitParam(name = "ordering",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3")
     })
-    public Message NowEat(int num, String remark,String name,int user_id,  int [] ordering) throws ParseException {
-       Order order=new Order();
+    public Message NowEat(Integer num, String remark,String name,Integer user_id,  Integer [] ordering) throws ParseException {
+        System.out.println(ordering.length);
+        Order order=new Order();
        order.setRemark(remark);
+        System.out.println(user_id);
        order.setUserId(user_id);
        order.setName(name);
         //判断是否有桌子供应
@@ -75,13 +77,24 @@ public class OrderingMealController {
                 //不具有会员id，直接进行点单
                 if (order.getUserId()==null){
                     //添加订单之前计算菜品金额
-                    order.setPrice(orderingMealService.Check(ordering));
+                    System.out.println(123);
+                    if (ordering.length!=0){
+                        order.setPrice(orderingMealService.Check(ordering));
+                    }else {
+                        order.setPrice(0.0);
+                    }
                     orderingMealService.InsertOrder(order);
                     //点单成功后，应当设置桌子状态
                     orderingMealService.UpdateTable(list.get(0));
-                    //添加item项目
-                    orderingMealService.InsertItems(order,ordering);
-                    return MessageUtil.success("点单成功");
+                    //判断item是否为空
+                    if (ordering.length==0){
+                        return MessageUtil.success("占座成功");
+                    }else {
+                        //添加item项目
+                        orderingMealService.InsertItems(order,ordering);
+                        return MessageUtil.success("点单成功");
+                    }
+
                 }
                 //具有会员id需要核对会员id与名字是否匹配
                 else{
@@ -92,9 +105,12 @@ public class OrderingMealController {
                         orderingMealService.InsertOrder(order);
                         //点单成功后，应当设置桌子状态
                         orderingMealService.UpdateTable(list.get(0));
-                        //添加item项目
-                        orderingMealService.InsertItems(order,ordering);
-                        return MessageUtil.success("点单成功");
+                        //判断item状态是否为空
+                            //添加item项目
+                            orderingMealService.InsertItems(order,ordering);
+                            return MessageUtil.success("点单成功");
+
+
                     }
                     else {
                         return MessageUtil.success("会员id与会员名字不匹配");
@@ -119,7 +135,7 @@ public class OrderingMealController {
             @ApiImplicitParam(name = "address",value = "地址",dataType = "String",paramType = "query",example = "送餐地址",required = true),
             @ApiImplicitParam(name = "num",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3")
     })
-    public Message Takeaway(String name,String remark,String phone,String address,int[] num) throws ParseException {
+    public Message Takeaway(String name,String remark,String phone,String address,Integer[] num) throws ParseException {
         Order order=new Order();
         //基本信息记录
         order.setName(name);
@@ -143,9 +159,13 @@ public class OrderingMealController {
             order.setPrice(orderingMealService.Check(num));
             //添加订单
             orderingMealService.InsertOrder(order);
-            //添加item项目
-            orderingMealService.InsertItems(order,num);
-            return MessageUtil.success("点单成功");
+            //判断item项目是否为空
+
+                //添加item项目
+                orderingMealService.InsertItems(order,num);
+                return MessageUtil.success("点单成功");
+
+
         }
         //存在下架情况
         else {
@@ -159,7 +179,7 @@ public class OrderingMealController {
             @ApiImplicitParam(name = "id",value = "订单id",dataType = "int",paramType = "query",example = "1",required = true),
             @ApiImplicitParam(name = "num",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3")
     })
-    public Message AddFood(int id,int[] num){
+    public Message AddFood(int id,Integer[] num){
         //订单存在
         System.out.println(123);
         if (orderingMealService.IsOrderExistence(id)){
@@ -189,7 +209,30 @@ public class OrderingMealController {
         else {
             return MessageUtil.success("兄弟你的单子不存在");
         }
+    }
 
-
+    @GetMapping("/settable")
+    @ApiOperation("占座点单")
+    @ApiImplicitParam(name = "num",value = "就餐人数",paramType = "query",dataType = "int")
+    public Message SetTable(Integer num) throws ParseException {
+        List<Table> l=orderingMealService.IsHasTable(num);
+        if (l.size()==0)return MessageUtil.success("没有合适人数的桌子，选择排队或这重新选择桌子人数");
+        else {
+            //更新桌子状态信息
+            orderingMealService.UpdateTable(l.get(0));
+            Order order = new Order();
+            order.setDate(new Date());
+            Date date= new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+            String s = dateFormat.format(date);
+            Date time=dateFormat.parse(s);
+            order.setTime(time);
+            order.setPrice(0.0);
+            order.setState("进行中");
+            order.setState("堂食");
+            order.setTableId(l.get(0).getId());
+            orderingMealService.InsertOrder(order);
+            return MessageUtil.success("占座成功，桌号为："+l.get(0).getId()+",并且成功创建订单,订单号为："+order.getId());
+        }
     }
 }

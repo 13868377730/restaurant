@@ -58,7 +58,7 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
     }
 
     @Override
-    public void InsertItems(Order order, int[] num) throws RuntimeException {
+    public void InsertItems(Order order, Integer[] num) throws RuntimeException {
         for (int i: num){
             Item item=new Item();
             item.setFoodId(i);
@@ -71,7 +71,7 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
     }
 
     @Override
-    public List<Food> IsHasFood(int[] num) throws RuntimeException {
+    public List<Food> IsHasFood(Integer[] num) throws RuntimeException {
         List<Food> list=new ArrayList<Food>();
         for (int i:num){
             if ("下架".equals(foodMapper.selectByPrimaryKey(i).getState())){
@@ -106,9 +106,11 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
     }
 
     @Override
-    public double Check(int[] num) throws RuntimeException {
+    public double Check(Integer[] num) throws RuntimeException {
         double sum=0.0;
+        System.out.println(1);
         for (int i:num){
+            System.out.println(2);
             Food food=foodMapper.selectByPrimaryKey(i);
             sum+=food.getPrice();
         }
