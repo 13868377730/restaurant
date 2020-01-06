@@ -227,6 +227,7 @@ public class OrderingMealController {
             String s = dateFormat.format(date);
             Date time=dateFormat.parse(s);
             order.setTime(time);
+            order.setPrice(0.0);
             order.setState("进行中");
             order.setState("堂食");
             order.setTableId(l.get(0).getId());
