@@ -29,9 +29,16 @@
     </resultMap>
 
     <select id="FindConsumption" resultMap="abc">
-        select * from restaurant_user where id=#{id}
-    </select>
-    <select id="selectUser" resultType="com.briup.restaurant.bean.Order">
         select * from restaurant_order where user_id=#{id}
+    </select>
+
+    <resultMap id="aaa" type="com.briup.restaurant.bean.User">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="phone_number" property="phoneNumber"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
+    <select id="selectUser" resultMap="aaa">
+        select * from restaurant_user where id=#{id}
     </select>
 </mapper>

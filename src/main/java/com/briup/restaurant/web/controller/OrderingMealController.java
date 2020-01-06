@@ -8,6 +8,8 @@ import com.briup.restaurant.service.IUserService;
 import com.briup.restaurant.util.Message;
 import com.briup.restaurant.util.MessageUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +35,19 @@ public class OrderingMealController {
 
     @PostMapping("/saveordering")
     @ApiOperation(value = "堂食点餐")
-    //ApiImplicitParam(name = "num",value = "堂食人数",required = "query",dataType = "int",paramType = "body")
-    public Message NowEat(int num, Order order, int [] ordering) throws ParseException {
-       //判断是否有桌子供应
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "num",value = "就餐人数",dataType = "int",paramType = "query",example = "2/4/8人桌",required = true),
+            @ApiImplicitParam(name = "remark",value = "点餐备注",dataType = "String",paramType = "query",example ="备注菜品口味" ),
+            @ApiImplicitParam(name = "name",value = "姓名",dataType = "String",paramType = "query",example = "凤尾虾",required = true),
+            @ApiImplicitParam(name = "user_id",value = "会员id",dataType = "int",paramType = "query",example = "会员id（选填）"),
+            @ApiImplicitParam(name = "ordering",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3",required = true)
+    })
+    public Message NowEat(int num, String remark,String name,int user_id, int [] ordering) throws ParseException {
+       Order order=new Order();
+       order.setRemark(remark);
+       order.setUserId(user_id);
+       order.setName(name);
+        //判断是否有桌子供应
         List<Table> list=orderingMealService.IsHasTable(num);
         System.out.println(list);
         if (list!=null&&list.size()>=1){
@@ -103,8 +115,20 @@ public class OrderingMealController {
 
     @PostMapping("/takeaway")
     @ApiOperation(value = "外卖点餐")
-    public Message Takeaway(Order order,int[] num) throws ParseException {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name",value = "姓名",dataType = "String",paramType = "query",example = "凤尾虾",required = true),
+            @ApiImplicitParam(name = "remark",value = "点餐备注",dataType = "String",paramType = "query",example = "备注菜品口味"),
+            @ApiImplicitParam(name = "phone",value = "联系方式",dataType = "String",paramType = "query",example = "联系方式",required = true),
+            @ApiImplicitParam(name = "address",value = "地址",dataType = "String",paramType = "query",example = "送餐地址",required = true),
+            @ApiImplicitParam(name = "num",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3",required = true)
+    })
+    public Message Takeaway(String name,String remark,String phone,String address,int[] num) throws ParseException {
+        Order order=new Order();
         //基本信息记录
+        order.setName(name);
+        order.setAddress(address);
+        order.setRemark(remark);
+        order.setPhone(phone);
         order.setDate(new Date());
         Date date= new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
@@ -134,6 +158,10 @@ public class OrderingMealController {
 
     @GetMapping("/addfood")
     @ApiOperation(value = "堂食加菜")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "订单id",dataType = "int",paramType = "query",example = "1",required = true),
+            @ApiImplicitParam(name = "num",value = "点餐菜品",allowMultiple=true,dataType = "int",paramType = "query",example = "1,2,3",required = true)
+    })
     public Message AddFood(int id,int[] num){
         //订单存在
         System.out.println(123);
