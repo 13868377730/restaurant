@@ -64,5 +64,6 @@ public class EmployeeController {
     public  Message findAll(){
         List<Employee> employees=employeeService.findAll();
         return MessageUtil.success(employees);
+
     }
 }
