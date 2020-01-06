@@ -94,4 +94,10 @@ public class TableServiceImpl implements ITableService {
         table.setState(state);
         tableMapper.updateByPrimaryKeySelective(table);
     }
+
+    @Override
+    public Table findById(int id) throws RuntimeException {
+        Table table = tableMapper.selectByPrimaryKey(id);
+        return table;
+    }
 }
