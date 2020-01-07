@@ -32,28 +32,30 @@ public class WaitingController {
     @Autowired
     ITableService iTableService;
 
-    @PostMapping("insert")
+
+    //@PostMapping("insert")
     @ApiOperation("增加排号")
     Message insert(Waiting waiting){
         iWaitingService.insert(waiting);
         return MessageUtil.success();
     }
 
-    @GetMapping("deleteById")
+
+    //@GetMapping("deleteById")
     @ApiOperation("删除排号")
     Message deleteById(int id){
         iWaitingService.deleteById(id);
         return MessageUtil.success();
     }
 
-    @GetMapping("deleteBatch")
+    //@GetMapping("deleteBatch")
     @ApiOperation("批量删除排号")
     Message deleteBatch(int[] ids){
         iWaitingService.deleteBatch(ids);
         return MessageUtil.success();
     }
 
-    @PostMapping("update")
+    //@PostMapping("update")
     @ApiOperation("更新排号")
     Message update(Waiting waiting){
         iWaitingService.update(waiting);
@@ -61,7 +63,7 @@ public class WaitingController {
     }
 
     @GetMapping("selectById")
-    @ApiOperation("查询排号")
+    @ApiOperation("用id查询排号")
     Message selectById(int id){
         return MessageUtil.success(iWaitingService.selectById(id));
     }
@@ -117,7 +119,7 @@ public class WaitingController {
         Waiting waiting = iWaitingService.selectById(id);
         if(waiting == null){
             return MessageUtil.success("该排号不存在");
-        }else if (waiting.getState() == "排队完成请入座") {
+        }else if ("排队完成请入座".equals(waiting.getState())) {
             return MessageUtil.success(iWaitingService.outOfDate(id));
         }else {
             return MessageUtil.success("该排号不处于排号完成状态");
