@@ -9,12 +9,20 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @RestController
@@ -87,5 +95,43 @@ public Message selectByState(){
         ifoodService.deleteById(id);
         return  MessageUtil.success("操作成功");
   }
+@GetMapping("/download")
+    @ApiOperation("下载菜单")
+    public void download(HttpServletResponse response)throws IOException {
+ List<Food> foods= ifoodService.selectByState();
+    //创建工作簿
+    XSSFWorkbook workbook = new XSSFWorkbook();
+    //创建工作表格
+    XSSFSheet sheet=workbook.createSheet("全部菜单");
+    //创建行
+    XSSFRow row=sheet.createRow(0);
+    //创建列 创建单元格
+    XSSFCell cell=row.createCell(0);
+    //设置单元格数据类型
+    cell.setCellType(CellType.STRING);
+    XSSFRow row1 = sheet.createRow(0);
+    row1.createCell(0).setCellValue("菜名");
+    row1.createCell(1).setCellValue("价钱");
+    row1.createCell(2).setCellValue("类型");
+    row1.createCell(3).setCellValue("状态");
+    for (int i=0;i<foods.size();i++){
+        XSSFRow rown = sheet.createRow(1+ i);
+        rown.createCell(0).setCellValue(foods.get(i).getName());
+        rown.createCell(1).setCellValue(foods.get(i).getPrice());
+        rown.createCell(2).setCellValue(foods.get(i).getType());
+        rown.createCell(3).setCellValue(foods.get(i).getState());
+
+    }
+    // 告诉浏览器用什么软件可以打开此文件
+    response.setHeader("content-Type", "application/vnd.ms-excel");
+    // 下载文件的默认名称
+    response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode("全部菜单"+".xlsx", "utf-8"));
+
+    try {
+        workbook.write(response.getOutputStream());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 
 }
