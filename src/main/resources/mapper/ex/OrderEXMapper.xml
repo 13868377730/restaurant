@@ -55,6 +55,11 @@
         <result column="price" property="price"></result>
     </resultMap>
 
+    <resultMap id="price" type="com.briup.restaurant.bean.ex.Orderex">
+        <id column="id"  property="id" />
+        <result column="price"  property="price" />
+    </resultMap>
+
     <select id="selectAll" resultMap="all">
         select id,table_id,state,user_id,price,type,date,time from restaurant_order order by id desc
     </select>
@@ -100,5 +105,8 @@
       #{userId,jdbcType=INTEGER}, #{tableId,jdbcType=INTEGER})
   </insert>
 
+    <select id="selectPrice" resultMap="price">
+    select id,price from restaurant_order where id=#{id}
+    </select>
 
 </mapper>
