@@ -144,7 +144,7 @@ public class WaitingController {
             headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
             HttpEntity<String> httpEntity = new HttpEntity<String>(json, headers);
             String result = restTemplate.postForObject(url, httpEntity, String.class);
-            System.out.println(endWait.getPhoneNumber());
+
 
 
 
