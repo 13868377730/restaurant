@@ -94,8 +94,6 @@ public class FoodServiceImpl implements IFoodService {
 
             return foodSales;
         }
-
-
         return null;
     }
 
@@ -110,5 +108,11 @@ public class FoodServiceImpl implements IFoodService {
     @Override
     public void deleteById(int id) {
         foodMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void addOrUpdQRCode() throws RuntimeException {
+        List<Food> menu = foodMapper.selectByExample(new FoodExample());
+
     }
 }
