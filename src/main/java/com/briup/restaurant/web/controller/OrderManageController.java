@@ -248,15 +248,9 @@ public class OrderManageController {
     @GetMapping("/code")
     @ApiOperation(value = "根据id生成或更新订单二维码")
     public Message addOrUpaQRCodeById(int id) throws JsonProcessingException {
-<<<<<<< HEAD
         iOrderManageService.addOrUpdQRCodeById(id);
-=======
-<<<<<<< HEAD
         iOrderManageService.addOrUpdQRCodeById(id);
-=======
         iOrderManageService.addOrUpdQRCodeById(id);;
->>>>>>> e6cf351ebc2851325f1cb743af1332f74bf84b77
->>>>>>> e862dc33319aef85b3a77f2bccf7f3d19dcc47eb
         return MessageUtil.success("操作成功");
     }
 }
