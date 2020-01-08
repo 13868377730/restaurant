@@ -111,4 +111,9 @@ public class FoodServiceImpl implements IFoodService {
     public void deleteById(int id) {
         foodMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public void addOrUpdQRCode() throws RuntimeException {
+
+    }
 }
