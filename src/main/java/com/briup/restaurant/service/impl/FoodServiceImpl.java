@@ -5,6 +5,7 @@ import com.briup.restaurant.bean.FoodExample;
 import com.briup.restaurant.bean.ex.FoodSales;
 import com.briup.restaurant.mapper.FoodMapper;
 import com.briup.restaurant.service.IFoodService;
+import com.briup.restaurant.util.QRCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -113,6 +114,13 @@ public class FoodServiceImpl implements IFoodService {
     @Override
     public void addOrUpdQRCode() throws RuntimeException {
         List<Food> menu = foodMapper.selectByExample(new FoodExample());
+        String str = new String();
+        for (Food food:menu){
+            str = str +"id:"+food.getId()+" name:"+food.getName()+" price"+food.getPrice()
+                    +" type:"+food.getType()+" state:"+food.getState()+"\n";
+        }
+        String address = "src/main/resources/static/menuQRCode/menu.jpg";
+        QRCodeUtil.zxingCodeCreate(str,address);
 
     }
 }
