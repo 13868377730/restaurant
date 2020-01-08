@@ -41,8 +41,8 @@ public class WaitingController {
     }
 
 
-    //@GetMapping("deleteById")
-    @ApiOperation("删除排号")
+    @GetMapping("deleteById")
+    @ApiOperation("取消排号")
     Message deleteById(int id){
         iWaitingService.deleteById(id);
         return MessageUtil.success();
