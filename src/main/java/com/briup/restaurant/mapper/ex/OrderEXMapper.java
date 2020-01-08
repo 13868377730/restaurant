@@ -14,4 +14,6 @@ public interface OrderEXMapper {
     List<Map<String,Object>> selectByState(String word);
     void InsertOrder(Order order);
     Orderex selectPrice(int id) throws  RuntimeException;
+//    Map<String,Object> selectPriceByFoodId(int foodId);
+
 }

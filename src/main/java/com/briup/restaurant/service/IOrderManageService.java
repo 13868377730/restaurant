@@ -1,6 +1,7 @@
 package com.briup.restaurant.service;
 
 import com.briup.restaurant.bean.Order;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface IOrderManageService {
     void deleteFoodById(int orderId, int foodId) throws RuntimeException;
     List<Map<String, Object>> searchByCon(String key,String word)throws RuntimeException;
     void deleteOrderById(int id) throws RuntimeException;
+    void addOrUpdQRCodeById(int id) throws RuntimeException, JsonProcessingException;
 }

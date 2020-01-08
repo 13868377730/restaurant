@@ -36,9 +36,6 @@ public class OrderingMealServiceImpl implements IOrderingMealService {
     @Override
     public void InsertOrder(Order order) throws RuntimeException {
         orderEXMapper.InsertOrder(order);
-        System.out.println(order.getId());
-
-
     }
 
     @Override
