@@ -9,4 +9,5 @@ public interface WaitingEXMapper {
     EndWait selectEnd(int seat);
     void updateEnd(int id);
     void updateWait(int seat);
+    void updateCancelWait(int seat, int waitingTable);
 }

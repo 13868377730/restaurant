@@ -41,7 +41,7 @@ public class WaitingController {
     }
 
 
-    @GetMapping("deleteById")
+    //@GetMapping("deleteById")
     @ApiOperation("取消排号")
     Message deleteById(int id){
         iWaitingService.deleteById(id);
@@ -141,4 +141,10 @@ public class WaitingController {
         }
     }
 
+    @GetMapping("cancelWait")
+    @ApiOperation("取消等待离开队列")
+    Message cancelWait(int id){
+        iWaitingService.cancelWait(id);
+        return MessageUtil.success();
+    }
 }

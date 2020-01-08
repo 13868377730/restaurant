@@ -105,4 +105,13 @@ public class WaitingServiceImpl implements IWaitingService {
         endWait.setState("排号"+waiting.getId()+"过期，您的排号已完成，请入座");
         return endWait;
     }
+
+    @Override
+        public void cancelWait(int id) {
+        Waiting waiting = waitingMapper.selectByPrimaryKey(id);
+        waitingMapper.deleteByPrimaryKey(id);
+        waitingEXMapper.updateCancelWait(waiting.getTableSeating(), waiting.getWaitingTable());
+    }
+
+
 }
