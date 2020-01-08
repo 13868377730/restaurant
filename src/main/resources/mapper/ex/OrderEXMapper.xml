@@ -29,10 +29,11 @@
 
     <resultMap id="inDetail" type="java.util.LinkedHashMap">
         <id column="id" property="id"></id>
+        <result column="state" property="state"></result>
         <result column="table_id" property="tableId"></result>
         <result column="price" property="price"></result>
-        <result column="state" property="state"></result>
         <result column="remark" property="remark"></result>
+
         <collection property="items"
                     column="id"
                     select="selectItems"
@@ -77,7 +78,7 @@
     </select>
 
     <select id="showInDetailById" resultMap="inDetail">
-        select id,table_id,state,price,remark from restaurant_order where id=#{id}
+        select id,state,table_id,price,remark from restaurant_order where id=#{id}
     </select>
 
     <select id="selectItems" resultMap="items">
@@ -108,5 +109,13 @@
     <select id="selectPrice" resultMap="price">
     select id,price from restaurant_order where id=#{id}
     </select>
+
+<!--    <resultMap id="Price" type="java.util.LinkedHashMap">-->
+<!--        <id column="id" property="id"></id>-->
+<!--        <result column="id" property="id"></result>-->
+<!--    </resultMap>-->
+<!--    <select id="selectPriceByFoodId" resultMap="Price">-->
+<!--        select id,price from restaurant_food where id=#{id};-->
+<!--    </select>-->
 
 </mapper>

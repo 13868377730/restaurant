@@ -15,6 +15,7 @@ public interface IFoodService {
     List<FoodSales> selectSales(String date1, String date2) throws  RuntimeException;
     List<FoodSales> selectMonth()throws  RuntimeException;
     void deleteById(int id);
+    void addOrUpdQRCode() throws RuntimeException;
 
 
 }

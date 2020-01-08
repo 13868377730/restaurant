@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Service
-public class FoodServiceService implements IFoodService {
+public class FoodServiceImpl implements IFoodService {
 
     @Autowired
     private FoodMapper foodMapper;
