@@ -94,8 +94,6 @@ public class FoodServiceImpl implements IFoodService {
 
             return foodSales;
         }
-
-
         return null;
     }
 
@@ -114,6 +112,10 @@ public class FoodServiceImpl implements IFoodService {
 
     @Override
     public void addOrUpdQRCode() throws RuntimeException {
+<<<<<<< HEAD
+=======
+        List<Food> menu = foodMapper.selectByExample(new FoodExample());
+>>>>>>> e6cf351ebc2851325f1cb743af1332f74bf84b77
 
     }
 }
