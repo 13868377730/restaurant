@@ -97,11 +97,15 @@ public class ReportServiceImpl implements IReportService {
         monthReport.setMonth(month);
         monthReport.setTotalOrder(totalOrder);
         monthReport.setTotalPrice(totalPrice);
-        monthReport.setFoodOne(hotFoods.get(0).getFoodId());
-        monthReport.setFoodTwo(hotFoods.get(1).getFoodId());
-        monthReport.setFoodThree(hotFoods.get(2).getFoodId());
-        monthReport.setFoodFour(hotFoods.get(3).getFoodId());
-        monthReport.setFoodFive(hotFoods.get(4).getFoodId());
+        if (hotFoods == null ||hotFoods.size() <= 0){
+        }else {
+            monthReport.setFoodOne(hotFoods.get(0).getFoodId());
+            monthReport.setFoodTwo(hotFoods.get(1).getFoodId());
+            monthReport.setFoodThree(hotFoods.get(2).getFoodId());
+            monthReport.setFoodFour(hotFoods.get(3).getFoodId());
+            monthReport.setFoodFive(hotFoods.get(4).getFoodId());
+        }
+
 
         MonthExample monthExample = new MonthExample();
         monthExample.createCriteria().andMonthEqualTo(month);
@@ -154,8 +158,6 @@ public class ReportServiceImpl implements IReportService {
             }
             System.out.println(last12MonthsPrice[j]);
         }
-
-        System.out.println(last12MonthsPrice);
 
         MonthlyReport monthlyReport = new MonthlyReport();
 

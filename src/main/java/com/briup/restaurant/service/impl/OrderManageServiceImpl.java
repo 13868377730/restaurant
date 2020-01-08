@@ -165,6 +165,10 @@ public class OrderManageServiceImpl implements IOrderManageService {
                 for (Item item:items){
                     itemMapper.deleteByPrimaryKey(item.getId());
                 }
+                //订单作用桌空闲
+                Table table = tableMapper.selectByPrimaryKey(orderMapper.selectByPrimaryKey(id).getTableId());
+                table.setState("空闲");
+                tableMapper.updateByPrimaryKey(table);
                 orderMapper.deleteByPrimaryKey(id);
             }
         }else{
