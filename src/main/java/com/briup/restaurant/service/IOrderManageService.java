@@ -10,6 +10,7 @@ public interface IOrderManageService {
     void updateTableById(int orderId,int tableId) throws RuntimeException;
     void discountById(int orderId,double price) throws RuntimeException;
     void deleteFoodById(int orderId, int foodId) throws RuntimeException;
+    void updateItemState(int itemId) throws RuntimeException;
     List<Map<String, Object>> searchByCon(String key,String word)throws RuntimeException;
     void deleteOrderById(int id) throws RuntimeException;
     void addOrUpdQRCodeById(int id) throws RuntimeException, JsonProcessingException;

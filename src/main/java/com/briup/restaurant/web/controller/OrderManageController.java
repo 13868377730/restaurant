@@ -244,14 +244,17 @@ public class OrderManageController {
             }
         }
     }
+    @GetMapping("/updateitemstate")
+    @ApiOperation(value = "更改订单项状态")
+    public  Message updateItemState(int itemId){
+        iOrderManageService.updateItemState(itemId);
+        return MessageUtil.success("操作成功");
+    }
 
     @GetMapping("/code")
     @ApiOperation(value = "根据id生成或更新订单二维码")
     public Message addOrUpaQRCodeById(int id) throws JsonProcessingException {
-
-
         iOrderManageService.addOrUpdQRCodeById(id);
-
         return MessageUtil.success("操作成功");
     }
 }

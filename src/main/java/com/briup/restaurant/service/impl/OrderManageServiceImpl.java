@@ -96,6 +96,8 @@ public class OrderManageServiceImpl implements IOrderManageService {
         }
     }
 
+
+
     @Override
     public void deleteFoodById(int orderId, int itemId) throws RuntimeException {
         if ("未开始".equals(itemMapper.selectByPrimaryKey(itemId).getState())) {
@@ -108,6 +110,21 @@ public class OrderManageServiceImpl implements IOrderManageService {
             orderMapper.updateByPrimaryKey(order);
         }else{
             throw  new RuntimeException("该订单项备餐中或已出餐");
+        }
+    }
+
+    @Override
+    public void updateItemState(int itemId) throws RuntimeException {
+        Item item=itemMapper.selectByPrimaryKey(itemId);
+        String state = itemMapper.selectByPrimaryKey(itemId).getState();
+        if ("未开始".equals(state)){
+            item.setState("备餐中");
+            itemMapper.updateByPrimaryKey(item);
+        }else if ("备餐中".equals(state)){
+            item.setState("已完成");
+            itemMapper.updateByPrimaryKey(item);
+        }else if ("已完成".equals(state)){
+            throw new RuntimeException("该订单已完成，不可修改状态");
         }
     }
 
