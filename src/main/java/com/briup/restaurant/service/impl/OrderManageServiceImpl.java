@@ -99,7 +99,7 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
     @Override
     public void deleteFoodById(int orderId, int itemId) throws RuntimeException {
-        if ("未开始".equals(itemMapper.selectByPrimaryKey(itemId))) {
+        if ("未开始".equals(itemMapper.selectByPrimaryKey(itemId).getState())) {
             //在菜单项中删除记录
             itemMapper.deleteByPrimaryKey(itemId);
             //在订单表中减去对应的价钱
