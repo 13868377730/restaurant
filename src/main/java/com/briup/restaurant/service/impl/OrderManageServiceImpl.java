@@ -212,8 +212,5 @@ public class OrderManageServiceImpl implements IOrderManageService {
         }
         String address = "src/main/resources/static/orderQRCode/"+id+".jpg";
         QRCodeUtil.zxingCodeCreate(str,address);
-
-
-
     }
 }
