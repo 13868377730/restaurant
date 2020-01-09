@@ -113,6 +113,7 @@ public class FoodServiceImpl implements IFoodService {
 
     @Override
     public void addOrUpdQRCode() throws RuntimeException {
+
         List<Food> menu = foodMapper.selectByExample(new FoodExample());
         String str = new String();
         for (Food food:menu){
@@ -121,6 +122,7 @@ public class FoodServiceImpl implements IFoodService {
         }
         String address = "src/main/resources/static/menuQRCode/menu.jpg";
         QRCodeUtil.zxingCodeCreate(str,address);
+
 
 
     }
