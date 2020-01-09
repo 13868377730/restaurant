@@ -1,19 +1,19 @@
 package com.briup.restaurant.service.impl;
 
 import com.briup.restaurant.bean.*;
+import com.briup.restaurant.util.QRCodeUtil;
 import com.briup.restaurant.mapper.FoodMapper;
 import com.briup.restaurant.mapper.ItemMapper;
 import com.briup.restaurant.mapper.OrderMapper;
 import com.briup.restaurant.mapper.TableMapper;
 import com.briup.restaurant.mapper.ex.OrderEXMapper;
 import com.briup.restaurant.service.IOrderManageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderManageServiceImpl implements IOrderManageService {
@@ -32,6 +32,9 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
     @Autowired
     private FoodMapper foodMapper;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     @Override
@@ -165,6 +168,10 @@ public class OrderManageServiceImpl implements IOrderManageService {
                 for (Item item:items){
                     itemMapper.deleteByPrimaryKey(item.getId());
                 }
+                //订单作用桌空闲
+                Table table = tableMapper.selectByPrimaryKey(orderMapper.selectByPrimaryKey(id).getTableId());
+                table.setState("空闲");
+                tableMapper.updateByPrimaryKey(table);
                 orderMapper.deleteByPrimaryKey(id);
             }
         }else{
@@ -173,4 +180,40 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
     }
 
+    @Override
+    public void addOrUpdQRCodeById(int id) throws RuntimeException, JsonProcessingException {
+
+        Map<String,Object> order = new HashMap<>();
+        if ("外卖".equals(orderMapper.selectByPrimaryKey(id).getType())){
+            order.putAll(orderEXMapper.showOutDetailById(id));
+        }else if ("堂食".equals(orderMapper.selectByPrimaryKey(id).getType())){
+            order.putAll(orderEXMapper.showInDetailById(id));
+        }
+
+        String str = new String();
+        Iterator<Map.Entry<String, Object>> it = order.entrySet().iterator();
+        while (it.hasNext()){
+            Map.Entry<String, Object> entry = it.next();
+            if ("items".equals(entry.getKey())){
+                String itemsStr = entry.getKey()+":" + entry.getValue();
+                //字符串有序隔开
+                String[] array=itemsStr.split(":");
+                array[0] = array[0] + ":\n";
+                str = str +array[0];
+                String[] array1=array[1].split("},");
+                for (String string:array1){
+                    string = string + "}" + "\n";
+                    str = str + string;
+                }
+            }else{
+                str = str + entry.getKey()+":" + entry.getValue()+ "\n";
+            }
+            System.out.println(str);
+        }
+        String address = "src/main/resources/static/orderQRCode/"+id+".jpg";
+        QRCodeUtil.zxingCodeCreate(str,address);
+
+
+
+    }
 }

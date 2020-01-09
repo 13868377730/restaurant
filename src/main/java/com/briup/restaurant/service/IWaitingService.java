@@ -17,4 +17,5 @@ public interface IWaitingService {
     EndWait endWait(int seat);
     int intoTheSeat(int id);
     EndWait outOfDate(int id);
+    void cancelWait(int id);
 }

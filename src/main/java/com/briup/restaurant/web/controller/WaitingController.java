@@ -1,8 +1,10 @@
 package com.briup.restaurant.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.briup.restaurant.bean.Table;
 import com.briup.restaurant.bean.Waiting;
 import com.briup.restaurant.bean.ex.EndWait;
+import com.briup.restaurant.mapper.WaitingMapper;
 import com.briup.restaurant.service.IOrderingMealService;
 import com.briup.restaurant.service.ITableService;
 import com.briup.restaurant.service.IWaitingService;
@@ -10,10 +12,14 @@ import com.briup.restaurant.util.Message;
 import com.briup.restaurant.util.MessageUtil;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.chrono.ThaiBuddhistChronology;
@@ -31,29 +37,36 @@ public class WaitingController {
     IOrderingMealService iOrderingMealService;
     @Autowired
     ITableService iTableService;
+    @Autowired
+    private WaitingMapper waitingMapper;
 
-    @PostMapping("insert")
+    @Autowired
+    private RestTemplate restTemplate;
+
+
+    //@PostMapping("insert")
     @ApiOperation("增加排号")
     Message insert(Waiting waiting){
         iWaitingService.insert(waiting);
         return MessageUtil.success();
     }
 
-    @GetMapping("deleteById")
-    @ApiOperation("删除排号")
+
+    //@GetMapping("deleteById")
+    @ApiOperation("取消排号")
     Message deleteById(int id){
         iWaitingService.deleteById(id);
         return MessageUtil.success();
     }
 
-    @GetMapping("deleteBatch")
+    //@GetMapping("deleteBatch")
     @ApiOperation("批量删除排号")
     Message deleteBatch(int[] ids){
         iWaitingService.deleteBatch(ids);
         return MessageUtil.success();
     }
 
-    @PostMapping("update")
+    //@PostMapping("update")
     @ApiOperation("更新排号")
     Message update(Waiting waiting){
         iWaitingService.update(waiting);
@@ -61,7 +74,7 @@ public class WaitingController {
     }
 
     @GetMapping("selectById")
-    @ApiOperation("查询排号")
+    @ApiOperation("用id查询排号")
     Message selectById(int id){
         return MessageUtil.success(iWaitingService.selectById(id));
     }
@@ -107,7 +120,37 @@ public class WaitingController {
         } else if(endWait == null){
             return MessageUtil.success("该桌型无需求");
         } else {
-            return MessageUtil.success(endWait);
+
+            //单发短信API
+            String url = "https://open.ucpaas.com/ol/sms/sendsms";
+            JSONObject jsonObject = new JSONObject();
+            //基础配置，在开发平台认证后获取
+            jsonObject.put("sid","ddcced57183bf8c2656ac8773d4f5f37");
+            jsonObject.put("token","c15b446d94cf25df3ff660bf72ad10f5");
+            jsonObject.put("appid","84d8fffe5c19486f92b165df652ebe3d");
+            //模板ID，在开发平台创建模板对应的模板ID
+            jsonObject.put("templateid", "528029");
+            //模板对应的参数，参数之间拼接用逗号作为间隔符
+            jsonObject.put("param", endWait.getId());
+
+            Waiting waiting = waitingMapper.selectByPrimaryKey(endWait.getId());
+            //要发送的手机号
+            jsonObject.put("mobile", waiting.getPhoneNumber());
+            //用户透传ID，随状态报告返回,可以不填写
+            jsonObject.put("uid","");
+            String json = JSONObject.toJSONString(jsonObject);
+            //使用restTemplate进行访问远程服务
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+            HttpEntity<String> httpEntity = new HttpEntity<String>(json, headers);
+            String result = restTemplate.postForObject(url, httpEntity, String.class);
+
+
+
+
+
+
+            return MessageUtil.success(endWait+""+result);
         }
     }
 
@@ -117,7 +160,7 @@ public class WaitingController {
         Waiting waiting = iWaitingService.selectById(id);
         if(waiting == null){
             return MessageUtil.success("该排号不存在");
-        }else if (waiting.getState() == "排队完成请入座") {
+        }else if ("排队完成请入座".equals(waiting.getState())) {
             return MessageUtil.success(iWaitingService.outOfDate(id));
         }else {
             return MessageUtil.success("该排号不处于排号完成状态");
@@ -139,4 +182,10 @@ public class WaitingController {
         }
     }
 
+    @GetMapping("cancelWait")
+    @ApiOperation("取消等待离开队列")
+    Message cancelWait(int id){
+        iWaitingService.cancelWait(id);
+        return MessageUtil.success();
+    }
 }

@@ -11,7 +11,10 @@
         </selectKey>
     </insert>
     <select id="countWait" resultType="java.lang.Integer">
-        select count(*) from restaurant_waiting where state = "等待中"
+        select count(*)
+        from restaurant_waiting
+        where state = "等待中"
+        and table_seating = #{seat}
     </select>
     <resultMap id="ew" type="com.briup.restaurant.bean.ex.EndWait">
         <id column="id" property="id"/>
@@ -28,6 +31,7 @@
         from restaurant_waiting
         where table_seating = #{seat}
         and state = '等待中')
+        and table_seating = #{seat}
         and state = '等待中'
     </select>
     <update id="updateEnd">
@@ -39,6 +43,16 @@
         update restaurant_waiting
         set waiting_table = waiting_table-1
         where state = '等待中'
-        and waiting_table >= #{waitTable}
+        and table_seating = #{seat}
+    </update>
+
+
+
+    <update id="updateCancelWait" >
+        update restaurant_waiting
+        set waiting_table = waiting_table-1
+        where state = '等待中'
+        and table_seating = #{seat}
+        and waiting_table > #{waitingTable}
     </update>
 </mapper>

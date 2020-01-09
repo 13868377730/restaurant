@@ -27,4 +27,5 @@ public interface WaitingMapper {
     int updateByPrimaryKeySelective(Waiting record);
 
     int updateByPrimaryKey(Waiting record);
+
 }

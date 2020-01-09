@@ -67,7 +67,7 @@ public class WaitingServiceImpl implements IWaitingService {
         waiting.setTableSeating(seating);
         waiting.setPhoneNumber(phoneNumber);
         waiting.setState("等待中");
-        waiting.setWaitingTable(waitingEXMapper.countWait()+1);
+        waiting.setWaitingTable(waitingEXMapper.countWait(seating)+1);
         //设置默认值
         waitingEXMapper.insertAndGetId(waiting);
         startWait.setId(waiting.getId());
@@ -84,7 +84,7 @@ public class WaitingServiceImpl implements IWaitingService {
             return null;
         }else {
             waitingEXMapper.updateEnd(endWait.getId());//更新排号成功的排号信息
-            waitingEXMapper.updateWait(endWait.getWaitTable());//更新该排号后的排号信息
+            waitingEXMapper.updateWait(seat);//更新该排号后的排号信息
             endWait.setState("排队完成请入座");//数据库更新了对象还没更新
             endWait.setWaitTable(0);
             return endWait;
@@ -105,4 +105,13 @@ public class WaitingServiceImpl implements IWaitingService {
         endWait.setState("排号"+waiting.getId()+"过期，您的排号已完成，请入座");
         return endWait;
     }
+
+    @Override
+        public void cancelWait(int id) {
+        Waiting waiting = waitingMapper.selectByPrimaryKey(id);
+        waitingMapper.deleteByPrimaryKey(id);
+        waitingEXMapper.updateCancelWait(waiting.getTableSeating(), waiting.getWaitingTable());
+    }
+
+
 }

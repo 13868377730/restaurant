@@ -9,7 +9,9 @@ import com.briup.restaurant.service.IOrderManageService;
 import com.briup.restaurant.service.IOrderSettleService;
 import com.briup.restaurant.util.Message;
 import com.briup.restaurant.util.MessageUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -89,7 +91,6 @@ public class OrderManageController {
         iOrderManageService.deleteOrderById(id);
         return MessageUtil.success("操作成功");
     }
-
 
     @ApiOperation("通过id下载")
     @GetMapping("/downout")
@@ -241,8 +242,15 @@ public class OrderManageController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
+    }
 
+    @GetMapping("/code")
+    @ApiOperation(value = "根据id生成或更新订单二维码")
+    public Message addOrUpaQRCodeById(int id) throws JsonProcessingException {
+        iOrderManageService.addOrUpdQRCodeById(id);
+        iOrderManageService.addOrUpdQRCodeById(id);
+        iOrderManageService.addOrUpdQRCodeById(id);;
+        return MessageUtil.success("操作成功");
     }
 }

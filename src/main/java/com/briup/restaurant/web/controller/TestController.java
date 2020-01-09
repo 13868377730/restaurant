@@ -3,8 +3,10 @@ package com.briup.restaurant.web.controller;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.domain.AlipayTradePayModel;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.briup.restaurant.mapper.OrderMapper;
 import com.briup.restaurant.util.AlipayConfig;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +20,10 @@ import java.io.IOException;
 @RequestMapping("/pay" )
 @Api(description = "支付")
 public class TestController {
+    @Autowired
+    private OrderMapper orderMapper;
     @GetMapping("/pay")
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response , int id) throws ServletException, IOException {
 
         try {
             AlipayClient alipayClient =
@@ -35,9 +39,10 @@ public class TestController {
             model.setOutTradeNo(System.currentTimeMillis() + "");
 
             // 设置订单金额
-            model.setTotalAmount("100.00");
+            model.setTotalAmount(Double.toString(
+                    orderMapper.selectByPrimaryKey(id).getPrice()));
             // 订单名字
-            model.setSubject("书籍订单");
+            model.setSubject("消费订单");
             // 订单描述
             model.setBody(System.currentTimeMillis()+"");
 
