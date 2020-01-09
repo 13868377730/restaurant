@@ -229,7 +229,7 @@ public class OrderingMealController {
             order.setTime(time);
             order.setPrice(0.0);
             order.setState("进行中");
-            order.setState("堂食");
+            order.setType("堂食");
             order.setTableId(l.get(0).getId());
             orderingMealService.InsertOrder(order);
             return MessageUtil.success("占座成功，桌号为："+l.get(0).getId()+",并且成功创建订单,订单号为："+order.getId());
