@@ -120,7 +120,7 @@ public class FoodServiceImpl implements IFoodService {
             str = str +"id:"+food.getId()+" name:"+food.getName()+" price"+food.getPrice()
                     +" type:"+food.getType()+" state:"+food.getState()+"\n";
         }
-        String address = "src/main/resources/static/menuQRCode/menu.jpg";
+        String address = "src/main/resources/static/menu.jpg";
         QRCodeUtil.zxingCodeCreate(str,address);
 
 

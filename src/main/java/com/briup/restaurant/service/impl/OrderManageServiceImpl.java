@@ -83,15 +83,13 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
     //1.5
     @Override
-    public void discountById(int orderId, double price) throws RuntimeException {
+    public void discountById(int orderId, double discount) throws RuntimeException {
         if ("已核对".equals(orderMapper.selectByPrimaryKey(orderId).getState())) {
-            if (price <= 0) {
-                throw new RuntimeException("金额输入有误，请重新输入");
-            } else if (price >= orderMapper.selectByPrimaryKey(orderId).getPrice()) {
-                throw new RuntimeException("折后金额大于或等于现在金额，请重新输入");
+            if (discount <= 0 || discount >= 1) {
+                throw new RuntimeException("折扣输入有误，请重新输入");
             } else {
                 Order order = orderMapper.selectByPrimaryKey(orderId);
-                order.setPrice(price);
+                order.setPrice(order.getPrice() * discount);
                 orderMapper.updateByPrimaryKey(order);
             }
         } else {
@@ -208,9 +206,8 @@ public class OrderManageServiceImpl implements IOrderManageService {
             }else{
                 str = str + entry.getKey()+":" + entry.getValue()+ "\n";
             }
-            System.out.println(str);
         }
-        String address = "src/main/resources/static/orderQRCode/"+id+".jpg";
+        String address = "src/main/resources/static/"+id+".jpg";
         QRCodeUtil.zxingCodeCreate(str,address);
     }
 }

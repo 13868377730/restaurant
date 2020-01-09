@@ -45,10 +45,10 @@ public class QRCodeUtil {
     //二维码生成格式
     private static final String imageType = "jpg";
 
-    public static void main(String[] args) throws Exception {
-        String str = "人员编码：1234；人员姓名：李四；";
-        zxingCodeCreate(str, "D:/二维码.jpg");
-    }
+//    public static void main(String[] args) throws Exception {
+//        String str = "人员编码：1234；人员姓名：李四；";
+//        zxingCodeCreate(str, "D:/二维码.jpg");
+//    }
 
     /**
      * 生成二维码

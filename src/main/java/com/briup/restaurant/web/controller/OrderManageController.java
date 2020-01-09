@@ -252,11 +252,6 @@ public class OrderManageController {
 
         iOrderManageService.addOrUpdQRCodeById(id);
 
-
-        iOrderManageService.addOrUpdQRCodeById(id);
-        iOrderManageService.addOrUpdQRCodeById(id);
-        iOrderManageService.addOrUpdQRCodeById(id);;
-
         return MessageUtil.success("操作成功");
     }
 }
