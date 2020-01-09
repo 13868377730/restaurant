@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -32,10 +33,6 @@ public class OrderManageServiceImpl implements IOrderManageService {
 
     @Autowired
     private FoodMapper foodMapper;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
 
     @Override
     //只查询所需字段，用Map装
@@ -89,7 +86,9 @@ public class OrderManageServiceImpl implements IOrderManageService {
                 throw new RuntimeException("折扣输入有误，请重新输入");
             } else {
                 Order order = orderMapper.selectByPrimaryKey(orderId);
-                order.setPrice(order.getPrice() * discount);
+                BigDecimal b1 = new BigDecimal(Double.toString(order.getPrice()));
+                BigDecimal b2 = new BigDecimal(Double.toString(discount));
+                order.setPrice(b1.multiply(b2).doubleValue());
                 orderMapper.updateByPrimaryKey(order);
             }
         } else {
