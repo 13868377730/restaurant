@@ -1,12 +1,10 @@
 package com.briup.restaurant.service.impl;
 
-import com.briup.restaurant.bean.Food;
-import com.briup.restaurant.bean.Item;
-import com.briup.restaurant.bean.ItemExample;
-import com.briup.restaurant.bean.Order;
+import com.briup.restaurant.bean.*;
 import com.briup.restaurant.mapper.FoodMapper;
 import com.briup.restaurant.mapper.ItemMapper;
 import com.briup.restaurant.mapper.OrderMapper;
+import com.briup.restaurant.mapper.TableMapper;
 import com.briup.restaurant.service.IOrderSettleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +23,9 @@ public class OrderSettleServiceImpl implements IOrderSettleService {
 
     @Autowired
     private FoodMapper foodMapper;
+
+    @Autowired
+    private TableMapper tableMapper;
     @Override
     public void check(int id) throws RuntimeException {
         if ("进行中".equals(orderMapper.selectByPrimaryKey(id).getState())){
@@ -57,6 +58,10 @@ public class OrderSettleServiceImpl implements IOrderSettleService {
             Order order = orderMapper.selectByPrimaryKey(id);
             order.setState("已买单");
             orderMapper.updateByPrimaryKey(order);
+
+            Table table = tableMapper.selectByPrimaryKey(order.getTableId());
+            table.setState("空闲");
+            tableMapper.updateByPrimaryKey(table);
         }else{
             throw new RuntimeException("该订单已买单或未核对，不可买单");
         }
