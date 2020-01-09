@@ -27,7 +27,7 @@ public class OrderSettleServiceImpl implements IOrderSettleService {
     private FoodMapper foodMapper;
     @Override
     public void check(int id) throws RuntimeException {
-        if ("进行中".equals(orderMapper.selectByPrimaryKey(id))){
+        if ("进行中".equals(orderMapper.selectByPrimaryKey(id).getState())){
             //确保未结算的菜品不会计入总价
             ItemExample example = new ItemExample();
             example.createCriteria().andOrderIdEqualTo(id);
