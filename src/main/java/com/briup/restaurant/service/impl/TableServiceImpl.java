@@ -72,7 +72,7 @@ public class TableServiceImpl implements ITableService {
     }
 
     @Override
-    public void AddOrUpdate(Table table) throws RuntimeException {
+    public void addOrUpdate(Table table) throws RuntimeException {
         if (table==null){
             throw new RuntimeException("参数为空");
 

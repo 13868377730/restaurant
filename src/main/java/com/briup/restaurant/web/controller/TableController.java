@@ -79,9 +79,9 @@ public class TableController {
     @PostMapping("/Add")
     @ApiOperation("添加餐桌")
 
-    public Message Add(Table table){
+    public Message add(Table table){
 
-            tableService.AddOrUpdate(table);
+            tableService.addOrUpdate(table);
             return MessageUtil.success("添加成功");
 
 
@@ -91,12 +91,12 @@ public class TableController {
     @PostMapping("/UpdateById")
     @ApiOperation("通过id修改餐桌")
 
-    public Message UpdateById(Table table){
+    public Message updateById(Table table){
         Table table1= tableService.findById(table.getId());
         if (table1==null){
             return MessageUtil.success("没有此餐桌");
         }else {
-            tableService.AddOrUpdate(table);
+            tableService.addOrUpdate(table);
             return MessageUtil.success("修改成功");
         }
 
