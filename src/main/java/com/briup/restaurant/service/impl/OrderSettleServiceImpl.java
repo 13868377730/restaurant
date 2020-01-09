@@ -53,7 +53,7 @@ public class OrderSettleServiceImpl implements IOrderSettleService {
 
     @Override
     public void settle(int id) throws RuntimeException {
-        if ("已核对".equals(orderMapper.selectByPrimaryKey(id))){
+        if ("已核对".equals(orderMapper.selectByPrimaryKey(id).getState())){
             Order order = orderMapper.selectByPrimaryKey(id);
             order.setState("已买单");
             orderMapper.updateByPrimaryKey(order);
